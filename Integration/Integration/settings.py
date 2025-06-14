@@ -76,9 +76,14 @@ WSGI_APPLICATION = 'Integration.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
+        'NAME': 'convoit_ifri',
+        'USER': 'root',
+        'PASSWORD': 'MySQL&2005&Yohanan',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
 
 
 # Password validation
