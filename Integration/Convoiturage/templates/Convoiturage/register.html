@@ -2,4 +2,15 @@
 
 {% block content %}
 
+
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    <button type="submit">Login</button>
+</form>
+
 {% endblock %}
