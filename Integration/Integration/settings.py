@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Convoiturage',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -75,12 +76,12 @@ WSGI_APPLICATION = 'Integration.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis', # <<< TRÈS IMPORTANT
         'NAME': 'convoit_ifri',
-        'USER': 'root',
+        'USER': 'postgres',
         'PASSWORD': 'MySQL&2005&Yohanan',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'HOST': 'localhost', # Ou l'adresse IP de votre serveur PostgreSQL
+        'PORT': '5432', # Laissez vide pour le port par défaut (5432)
     }
 }
 
@@ -126,3 +127,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+
+# ... vos autres configurations settings ...
+
+# Configuration GDAL pour django.contrib.gis
+if os.name == 'nt':  # Si vous êtes sur Windows
+    # REMPLACEZ CE CHEMIN par le chemin réel de votre gdalXXX.dll
+    GDAL_LIBRARY_PATH = r'C:/OSGeo4W/bin/gdal310.dll'# OU, si vous avez une version différente, adaptez le numéro (ex: gdal309.dll)
+    GEOS_LIBRARY_PATH = r'C:/OSGeo4W/bin/geos_c.dll' # REMPLACEZ CE CHEMIN par le chemin réel
+    # N'oubliez pas le 'r' devant la chaîne pour les chemins bruts (raw strings)
+    # pour éviter les problèmes avec les barres obliques inverses.
+else:  # Si vous êtes sur Linux ou macOS
+    # REMPLACEZ CE CHEMIN par le chemin réel de votre libgdal.so ou libgdal.dylib
+    GDAL_LIBRARY_PATH = '/usr/local/lib/libgdal.so'
+    GEOS_LIBRARY_PATH = '/usr/local/lib/libgeos_c.so' # REMPLACEZ CE CHEMIN
+    # Ou '/usr/lib/libgdal.so' ou '/opt/homebrew/lib/libgdal.dylib' sur macOS, etc.
