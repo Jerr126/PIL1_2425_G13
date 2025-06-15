@@ -29,6 +29,9 @@ EN CE QUI CONCERNE LE FONDEND:
 
 
 EN CE QUI CONCERNE LE BACKEND:
+Après la mise en place de l'architecture Django et la création de ses constituants de base (par Charbel), nous sommes passer à la mise en place d'une base 
+de données MySql conformement au cahier de charge. Mais suite à la création de nos tableaux (par Charbel, Fidel et Yohanan), nous avons opter pour une base de
+donnée PostgreSql, car dans django mysql ne gère pas les données de types point, indispensables dans nos tables pour la manipulation des données géospatial.
 
 
 A PROPOS DES TESTS ET DES BUGS:
