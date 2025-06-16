@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="asset/css/inscription.css">
+    <title>Connexion-Inscription</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="signin-signup">
+            <form action="" class="sign-in-form">
+                <h2 class="title">Connexion</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Nom d'utilisateur">
+                </div>
+                <div class=" input-field ">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Mot de passe">
+                </div>
+                <input type="submit" value="Se connecter" class="btn">
+                <div class="options">
+                    <a href="#">Mot de passe oublié ?</a>
+                </div>
+                <p class="social-text">Ou Se connecter avec</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </form>
+            <form action="" class="sign-up-form">
+                <h2 class="title">Inscription</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Nom d'utilisateur">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" placeholder="Email">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" placeholder="Numero">
+                </div>
+                <div class=" input-field ">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Mot de passe">
+                </div>
+                <div class=" input-field ">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Confirmer mot de passe">
+                </div>
+                <input type="submit" value="S'inscrire" class="btn">
+                <div class="options">
+                    <label><input type="checkbox" name="remember"> Se souvenir du mot de passe</label>
+                </div>
+            </form>
+        </div>
+        <div class=" panels-container ">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Dejà sur ICE?</h3>
+                    <p>De nouveaux trajets vous attendent chaque jour<br>Connectez-vous pour en profiter dès maintenant</p>
+                    <button class="btn" id="sign-in-btn">Se connecter</button>
+                </div>
+                <img src="asset/ressources/img/ice.jpg" alt="" class="image">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>Nouveau sur ICE?</h3>
+                    <p>Rejoignez ICE maintenant<br>Trouvez ou proposez facilement un trajet et voyagez à moindre coût avec d'autres passagers</p>
+                    <button class="btn" id="sign-up-btn">S'inscrire</button>
+                </div>
+                <img src="asset/ressources/img/ice.jpg" alt="" class="image">
+            </div>
+        </div>
+    </div>
+    <script src="asset/js/inscription.js"></script>
+</body>
+
+</html>
