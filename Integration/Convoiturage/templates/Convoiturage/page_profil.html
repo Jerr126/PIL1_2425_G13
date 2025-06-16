@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Utilisateur</title>
+    <link rel="stylesheet" href="asset/css/style_profil.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-container">
+                <div class="profile-picture" onclick="document.getElementById('fileInput').click()">
+                    <img id="avatar" src="asset/ressources/img/profil.jpg" alt="Photo de profil">
+                </div>
+                <input type="file" id="fileInput" accept="image/*" onchange="changeProfilePicture()" hidden>
+                <button onclick="document.getElementById('fileInput').click()">Changer la photo</button>
+            </div>
+            <nav class="nav">
+                <button href="#" class="active">Paramètres</button>
+                <button href="ice.html" class="active">Déconnexion</button>
+            </nav>
+        </aside>
+
+        <!-- Main Profile Form -->
+        <main class="profile-form">
+            <h2>Information personnelle</h2>
+            <div class="toggle-container">
+                <span class="label">Passager</span>
+                <label class="switch"><input type="checkbox" id="roleToggle"><span class="slider"></span></label>
+                <span class="label">Conducteur</span>
+            </div>
+            <form>
+                <div class="form-grid">
+                    <div>
+                        <label>Nom</label>
+                        <input type="text" placeholder="Nom" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+                    <div>
+                        <label>Prenoms</label>
+                        <input type="text" placeholder="Prenoms" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+
+                    <div class="full-width">
+                        <label>Email</label>
+                        <input type="email" placeholder="Email" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+                    <div>
+                        <label>Numéro de téléphone</label>
+                        <input type="text" placeholder="Numéro de téléphone" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+                    <div class="vehicle-info">
+                        <label>Type d'engin</label>
+                        <input type="text" placeholder="Type d'engin" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+                    <div class="vehicle-info">
+                        <label>Matricule</label>
+                        <input type="text" placeholder="Matricule" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+                    <div>
+                        <label>Position</label>
+                        <input type="text" placeholder="Position" />
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="save">Sauvegarder</button>
+                </div>
+            </form>
+        </main>
+    </div>
+    <script src="asset/js/profil.js"></script>
+</body>
+
+</html>
