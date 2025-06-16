@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Conducteur
+from .models import Passager
 from django.contrib.auth.hashers import make_password
 
 
@@ -10,7 +10,7 @@ class LoginForm(forms.Form):
 
 
 
-class ConducteurRegistrationForm(forms.ModelForm):
+class PassagerRegistrationForm(forms.ModelForm):
     # Ajoutez des champs supplémentaires si nécessaire, par exemple pour la confirmation du mot de passe
     password_confirm = forms.CharField(
         label='Confirmer le mot de passe',
@@ -19,15 +19,14 @@ class ConducteurRegistrationForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Conducteur
-        fields = ['nom', 'prenom', 'num_tel', 'email', 'mot_de_passe', 'type_vehicule']
+        model = Passager
+        fields = ['nom', 'prenom', 'num_tel', 'email', 'mot_de_passe',]
         widgets = {
             'mot_de_passe': forms.PasswordInput(attrs={'class': 'form-control'}),
             'nom': forms.TextInput(attrs={'class': 'form-control'}),
             'prenom': forms.TextInput(attrs={'class': 'form-control'}),
-            'num_tel': forms.TextInput(attrs={'class': 'form-control'}),
+            'num_tel': forms.TextInput(attrs={'class': 'form-control', 'pattern': '\\d{10}', 'title': 'Le numéro 10 chiffres.'}), # <-- Ajoutez 'pattern' et 'title'
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'type_vehicule': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'nom': 'Nom',
@@ -35,7 +34,6 @@ class ConducteurRegistrationForm(forms.ModelForm):
             'num_tel': 'Numéro de téléphone',
             'mot_de_passe': 'Mot de passe',
             'email': 'Adresse e-mail',
-            'type_vehicule': 'Type de véhicule',
         }
         help_texts = {
             'num_tel': 'Votre numéro de téléphone (10 chiffres).',

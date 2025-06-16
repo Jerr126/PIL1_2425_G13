@@ -34,11 +34,11 @@ def success_view(request):
 
 from django.shortcuts import render, redirect
 from django.contrib import messages # Pour afficher des messages de succès/erreur
-from .forms import ConducteurRegistrationForm
+from .forms import  PassagerRegistrationForm
 
-def register_conducteur(request):
+def register_passager(request):
     if request.method == 'POST':
-        form = ConducteurRegistrationForm(request.POST)
+        form = PassagerRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Votre compte conducteur a été créé avec succès !')
@@ -46,7 +46,7 @@ def register_conducteur(request):
         else:
             messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
     else:
-        form = ConducteurRegistrationForm() # Formulaire vide pour une requête GET
+        form = PassagerRegistrationForm() # Formulaire vide pour une requête GET
 
     return render(request, 'Convoiturage/register_conducteur.html', {'form': form})
 

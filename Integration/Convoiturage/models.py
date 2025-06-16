@@ -1,12 +1,21 @@
 from django.contrib.gis.db import models
+from django.core.validators import RegexValidator 
 
 # Create your models here.
 class Conducteur(models.Model):
     id_conducteur = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
-    num_tel = models.CharField(unique=True, max_length=10)
-    mot_de_passe = models.CharField(max_length=150)
+    phone_regex = RegexValidator(
+        regex=r'^\d{10}$', # Regex pour 10 chiffres exacts. Si vous voulez plus de flexibilité, utilisez r'^\d+$'
+        message="uniquement 10 chiffres."
+    )
+    num_tel = models.CharField(
+        validators=[phone_regex], # Applique le validateur
+        unique=True,
+        max_length=10 # Conserve max_length à 10 pour la cohérence
+    )
+    mot_de_passe = models.CharField(max_length=180)
     email = models.EmailField(unique=True)
     type_vehicule = models.CharField(max_length=100)
 
@@ -32,9 +41,17 @@ class Passager(models.Model):
     id_passager = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
-    num_tel = models.CharField(unique=True, max_length=10)
-    mot_de_passe = models.CharField(max_length=150)
+    phone_regex = RegexValidator(
+        regex=r'^\d{10}$', # Regex pour 10 chiffres exacts. Si vous voulez plus de flexibilité, utilisez r'^\d+$'
+        message="uniquement 10 chiffres."
+    )
+    num_tel = models.CharField(
+        validators=[phone_regex], # Applique le validateur
+        unique=True,
+        max_length=10 # Conserve max_length à 10 pour la cohérence
+    )
     email = models.EmailField(unique=True)
+    mot_de_passe = models.CharField(max_length=180)
     id_conducteur = models.ForeignKey(Conducteur, on_delete=models.CASCADE)
     id_trajet = models.ForeignKey(Trajet, on_delete=models.CASCADE)
     
