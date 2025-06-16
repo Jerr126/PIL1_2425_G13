@@ -1,0 +1,39 @@
+{% extends 'Convoiturage/base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Inscription Conducteur</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %} {# Très important pour la sécurité de Django #}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="helptext">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+{% endblock %}

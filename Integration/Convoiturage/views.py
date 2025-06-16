@@ -5,8 +5,6 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'Convoiturage/index.html')
 
-def register(request):
-    return render(request, 'Convoiturage/register.html')
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
@@ -21,15 +19,36 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('success_page')  # Rediriger vers une page de succès
+                return redirect('success_page')  # Rediriger vers une page de succèss
             else:
                 # Gestion de l'échec de connexion (par exemple, afficher un message d'erreur)
-                return render(request, 'login.html', {'form': form, 'error_message': 'Invalid credentials'})
+                return render(request, 'Convoiturage/login.html', {'form': form, 'error_message': 'Invalid credentials'})
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'Convoiturage/login.html', {'form': form})
 
 from django.shortcuts import render
 
 def success_view(request):
-    return render(request, 'success.html')  # Exemple de page de succès, à créer dans le dossier templates
+    return render(request, 'Convoiturage/success.html')  # Exemple de page de succès, à créer dans le dossier templates
+
+from django.shortcuts import render, redirect
+from django.contrib import messages # Pour afficher des messages de succès/erreur
+from .forms import ConducteurRegistrationForm
+
+def register_conducteur(request):
+    if request.method == 'POST':
+        form = ConducteurRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Votre compte conducteur a été créé avec succès !')
+            return redirect('registration_success') # Redirige vers une page de succès
+        else:
+            messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
+    else:
+        form = ConducteurRegistrationForm() # Formulaire vide pour une requête GET
+
+    return render(request, 'Convoiturage/register_conducteur.html', {'form': form})
+
+def registration_success(request):
+    return render(request, 'Convoiturage/registration_success.html')

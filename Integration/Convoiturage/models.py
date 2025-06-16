@@ -6,7 +6,7 @@ class Conducteur(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
     num_tel = models.CharField(unique=True, max_length=10)
-    mot_de_passe = models.CharField(max_length=50)
+    mot_de_passe = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     type_vehicule = models.CharField(max_length=100)
 
@@ -33,7 +33,7 @@ class Passager(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
     num_tel = models.CharField(unique=True, max_length=10)
-    mot_de_passe = models.CharField(max_length=50)
+    mot_de_passe = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     id_conducteur = models.ForeignKey(Conducteur, on_delete=models.CASCADE)
     id_trajet = models.ForeignKey(Trajet, on_delete=models.CASCADE)
