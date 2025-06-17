@@ -1,6 +1,8 @@
 from django.contrib.gis.db import models
 from django.core.validators import RegexValidator 
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings # Pour lier à notre modèle d'utilisateur personnalisé
+from datetime import datetime, timedelta
 
 
 class Utilisateur(AbstractUser):
@@ -38,21 +40,37 @@ class Utilisateur(AbstractUser):
         return self.get_full_name() or self.username
 
 
-
+# Assurez-vous que votre modèle Utilisateur est importé ou référencé correctement
+# from .models import Utilisateur # Si Utilisateur est dans le même fichier
 
 class Trajet(models.Model):
-    id_trajet = models.AutoField(primary_key=True)
-    point_depart = models.PointField()
-    point_arrive = models.PointField()
-    heure_depart = models.DateTimeField()
-    duree = models.TimeField()
-    place_libre = models.IntegerField()
-    id_conducteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    # Lien vers le conducteur (utilisateur personnalisé)
+    conducteur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='trajets_proposes',
+        limit_choices_to={'is_conducteur': True} # S'assurer que seul un conducteur peut proposer un trajet
+    )
+
+    origine = models.CharField(max_length=255, verbose_name="Lieu de départ")
+    destination = models.CharField(max_length=255, verbose_name="Lieu d'arrivée")
+    date_depart = models.DateField(verbose_name="Date de départ")
+    heure_depart = models.TimeField(verbose_name="Heure de départ")
+    nombre_places = models.PositiveIntegerField(default=1, verbose_name="Nombre de places disponibles")
+    prix_par_place = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Prix par place")
+    description = models.TextField(blank=True, null=True, verbose_name="Description du trajet")
+    date_creation = models.DateTimeField(auto_now_add=True)
+    actif = models.BooleanField(default=True, verbose_name="Trajet actif")
 
     class Meta:
-        unique_together = ('heure_depart', 'id_conducteur')
-        indexes = [
-            models.Index(fields=['point_depart']),
-            models.Index(fields=['point_arrive']),
-        ]
+        verbose_name = "Trajet"
+        verbose_name_plural = "Trajets"
+        ordering = ['date_depart', 'heure_depart'] # Tri par défaut
 
+    def __str__(self):
+        return f"Trajet de {self.origine} à {self.destination} le {self.date_depart} par {self.conducteur.get_full_name() or self.conducteur.username}"
+
+    # Propriété pour combiner date et heure pour des comparaisons plus faciles
+    @property
+    def datetime_depart(self):
+        return datetime.combine(self.date_depart, self.heure_depart)

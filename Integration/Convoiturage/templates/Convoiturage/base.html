@@ -1,62 +1,89 @@
 {# myapp/templates/base.html #}
-{% load static %} {# Très important : pour utiliser le tag 'static' #}
+{% load static %} {# Ne pas oublier ceci pour le tag 'static' #}
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mon Application Django{% endblock %}</title>
+    <title>{% block title %}Mon Application de Covoiturage{% endblock %}</title>
 
-    {# Styles CSS GLOBALS #}
-    <link rel="stylesheet" href="{% static 'css/global.css' %}">
-    {# Optionnel: Inclure Font Awesome pour les icônes si utilisé globalement #}
+    {# CSS Global à toutes les pages #}
+    <link rel="stylesheet" href="{% static 'Convoiturage/css/global.css' %}">
+    {# Font Awesome pour les icônes - Important si vous utilisez des icônes #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    {# BLOC POUR LES STYLES CSS SPÉCIFIQUES À CHAQUE PAGE #}
+    {# Bloc pour les CSS spécifiques à chaque page (rempli par les templates enfants) #}
     {% block extra_css %}{% endblock %}
 
 </head>
 <body>
 
-    {# En-tête / Barre de navigation commune #}
+    {# En-tête / Barre de navigation #}
     <nav class="main-nav">
         <ul>
             <li>
-                {# Le lien "Accueil" est actif si l'URL actuelle est l'URL de 'home' #}
-                <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Accueil</a>
+                {# Lien Accueil : actif si le nom d'URL est 'home' ou 'home_alt' (pour / ou /home/) #}
+                <a href="{% url 'home' %}"
+                   class="{% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'home_alt' %}active{% endif %}">
+                   Accueil
+                </a>
             </li>
             <li>
-                {# Le lien "Mon Profil" est actif si l'URL actuelle est l'URL de 'profile' #}
-                <a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Mon Profil</a>
+                {# Lien Mon Profil : actif si le nom d'URL est 'profile' #}
+                <a href="{% url 'profile' %}"
+                   class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                   Mon Profil
+                </a>
             </li>
-            {# Ajoutez d'autres liens de navigation communs ici #}
+            {# NOUVEAU: Liens pour Rechercher et Proposer un trajet #}
+            <li>
+                {# Lien Rechercher Trajet : actif si le nom d'URL est 'search_trip' #}
+                <a href="{% url 'search_trip' %}"
+                   class="{% if request.resolver_match.url_name == 'search_trip' %}active{% endif %}">
+                   Rechercher un Trajet
+                </a>
+            </li>
+            {% if user.is_authenticated and user.is_conducteur %}
+            <li>
+                {# Lien Proposer Trajet : actif si le nom d'URL est 'propose_trip' #}
+                <a href="{% url 'propose_trip' %}"
+                   class="{% if request.resolver_match.url_name == 'propose_trip' %}active{% endif %}">
+                   Proposer un Trajet
+                </a>
+            </li>
+            {% endif %}
+
+            {# Liens d'authentification #}
             {% if user.is_authenticated %}
-                <li>
-                    {# Pour la déconnexion, il n'y a pas vraiment d'état actif permanent, mais vous pouvez styliser #}
-                    <a href="{% url 'logout' %}">Déconnexion</a>
-                </li>
+                <li><a href="{% url 'logout' %}">Déconnexion</a></li>
             {% else %}
-                <li>
-                    <a href="{% url 'login' %}" class="{% if request.resolver_match.url_name == 'login' %}active{% endif %}">Connexion</a>
-                </li>
-                <li>
-                    <a href="{% url 'register' %}" class="{% if request.resolver_match.url_name == 'register' %}active{% endif %}">Inscription</a> {# Si vous avez une page d'inscription #}
-                </li>
+                <li><a href="{% url 'login' %}">Connexion</a></li>
+                <li><a href="{% url 'register' %}">Inscription</a></li> {# MODIFIER: 'register' si vous avez une URL pour l'inscription #}
             {% endif %}
         </ul>
     </nav>
 
+    {# Conteneur principal du contenu de chaque page #}
     <main>
-        {% block content %}{% endblock %} {# BLOC PRINCIPAL POUR LE CONTENU DE LA PAGE #}
+        {# Gestion des messages Django (succès, erreur, info) #}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %} {# Le contenu unique de la page sera inséré ici #}
     </main>
 
-    {# Ici, vous pourriez avoir un pied de page commun #}
+    {# Pied de page commun #}
     <footer>
-        <p>&copy; 2025 Mon Application. Tous droits réservés.</p>
+        <p>&copy; 2025 Mon Application de Covoiturage. Tous droits réservés.</p>
     </footer>
 
-    {# BLOC POUR LES SCRIPTS JS SPÉCIFIQUES À CHAQUE PAGE #}
+    {# Bloc pour les scripts JS spécifiques à chaque page (chargé en dernier pour la performance) #}
     {% block extra_js %}{% endblock %}
 
 </body>
