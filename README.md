@@ -11,6 +11,7 @@ Groupe n°13:
   - BANDA BONI Charbel Seka
   - MEDJA Jerry Smith Nistelrooy
   - DADJI Naomie Kafuiata Océane
+  - BOSSA Ghislain Régis Josaphat
 
 DESCRIPTION:
 Le projet de cette année consiste à réaliser une application web qui met en relation les étudiants de l’IFRI souhaitant partager leurs trajets quotidiens entre leur domicile et le campus. Dans cette application de covoiturage nommée ICE (Ifri Convoit Etudiant) :

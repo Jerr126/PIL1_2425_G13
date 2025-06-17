@@ -1,16 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+/* assets/css/style_profil.css */
 
-* {
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: #2b2a2a;
-    padding: 40px;
-}
+/* Note: Les styles généraux comme body, h1, a, input, etc.
+   sont maintenant dans global.css. Ne les dupliquez pas ici
+   sauf si vous voulez les surcharger spécifiquement pour la page profil. */
 
 .container {
     display: flex;
@@ -20,21 +12,22 @@ body {
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(248, 247, 247, 0.05);
     overflow: hidden;
+    color: #fff; /* Couleur de texte par défaut pour ce conteneur */
 }
 
-
 /* Sidebar */
-
 .sidebar {
     width: 250px;
     background: #fff;
     padding: 30px 20px;
     border-right: 1px solid #eee;
+    color: #333; /* Texte sombre pour la sidebar */
 }
 
 .profile-container {
     text-align: center;
     margin-top: 30px;
+    margin-bottom: 40px; /* Espace après les infos utilisateur */
 }
 
 .profile-picture {
@@ -63,35 +56,23 @@ body {
     object-fit: cover;
 }
 
-/* Boutons généraux */
-button {
-    margin-top: 15px;
-    padding: 8px 16px;
-    border: 1px solid #013069; /* Bordure plus cohérente */
-    background-color: #013069;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-button:hover {
-    background-color: #002246; /* Légèrement plus foncé pour le hover */
+.user-info {
+    margin-top: 20px;
 }
 
 .user-info h3 {
     font-size: 18px;
     margin-bottom: 4px;
+    color: #333; /* Couleur spécifique pour le titre dans la sidebar */
 }
 
 .user-info p {
     color: #888;
     font-size: 14px;
+    margin-bottom: 2px;
 }
 
-.nav button,
-.nav a { /* J'ai ajouté 'a' car les liens de navigation peuvent être des 'a' plutôt que des 'button' */
+.nav button {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -101,22 +82,16 @@ button:hover {
     font-size: 15px;
     border-radius: 10px;
     transition: 0.3s;
-    color: white; /* Assurez que le texte du lien est blanc */
-    text-decoration: none; /* Enlève le soulignement par défaut des liens */
-    display: block; /* Pour que le padding et la largeur fonctionnent comme un bouton */
-}
-
-.nav button.active,
-.nav button:hover,
-.nav a.active,
-.nav a:hover {
-    background: #002246; /* Couleur de hover plus foncée */
     color: white;
 }
 
+.nav button.active,
+.nav button:hover {
+    background: #002246;
+    color: white;
+}
 
 /* Form section */
-
 .profile-form {
     flex: 1;
     padding: 40px;
@@ -126,8 +101,10 @@ button:hover {
 .profile-form h2 {
     margin-bottom: 20px;
     font-size: 24px;
+    color: #e0f2f7; /* Couleur de titre sur fond sombre */
 }
 
+/* Gender section (if applicable, or remove) */
 .gender {
     margin-bottom: 25px;
 }
@@ -149,34 +126,16 @@ button:hover {
     grid-column: span 2;
 }
 
+/* Labels pour les champs de formulaire */
 label {
     display: block;
     margin-bottom: 6px;
     font-weight: 500;
+    color: #a7d9f5; /* Couleur des labels sur fond sombre */
 }
 
-/* Styles pour tous les inputs générés par Django */
-input[type="text"],
-input[type="email"],
-input[type="tel"], /* Pour le champ num_tel */
-input[type="password"] { /* Si vous avez des champs de mot de passe à l'avenir */
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #f9f9f9;
-    color: #333; /* Couleur du texte dans les inputs */
-}
-
-/* Style spécifique pour la checkbox is_conducteur (le 'switch' lui-même) */
-/* La checkbox elle-même est cachée, le style est pour le .slider */
-input[type="checkbox"] {
-    /* Garde la checkbox cachée comme prévu par votre design de toggle */
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
+/* Note: Input styles sont principalement dans global.css.
+   Si vous voulez des overrides spécifiques pour le profil, mettez-les ici. */
 
 .buttons {
     margin-top: 30px;
@@ -192,25 +151,28 @@ input[type="checkbox"] {
     border-radius: 10px;
     color: white;
     cursor: pointer;
-    /* align-items: center; */ /* Ces propriétés sont pour le flexbox du parent 'buttons' */
-    /* justify-content: center; */
+    transition: background 0.3s;
 }
 
-/* Styles pour le toggle container */
+.save:hover {
+    background-color: #004085;
+}
+
+/* Toggle Switch Styles */
 .toggle-container {
     display: flex;
     align-items: center;
     gap: 10px;
     font-family: Arial, sans-serif;
     font-weight: bold;
-    margin-bottom: 20px; /* Ajout d'une marge en bas pour espacer */
+    margin-bottom: 20px;
 }
-.label {
+
+.toggle-container .label { /* Spécificité pour le label du toggle */
     font-size: 16px;
     color: #fff;
 }
 
-/* Styles pour le switch (la zone cliquable du toggle) */
 .switch {
     position: relative;
     display: inline-block;
@@ -218,7 +180,12 @@ input[type="checkbox"] {
     height: 26px;
 }
 
-/* Styles pour le slider (le bouton visuel du toggle) */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
 .slider {
     position: absolute;
     cursor: pointer;
@@ -254,65 +221,35 @@ input[type="checkbox"] {
 .emoji-edit {
     cursor: pointer;
     font-size: 18px;
+<<<<<<< HEAD
     transform: translateY(-50%); /* Ajustement pour le centrage parfait */
     color: #bbb; /* Rendre l'emoji visible sur fond sombre */
+=======
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bbb;
+>>>>>>> 5f9b0a4e994cca308a34160aa0c578405cbe3698
 }
 
-/* --- AJOUTS POUR DJANGO FORMS ET MESSAGES --- */
-
-/* Styles pour les messages de Django */
-.messages {
-    list-style: none;
-    padding: 10px 0; /* Ajustez le padding vertical */
-    margin-bottom: 20px;
-}
-.messages li {
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #fff; /* Couleur de texte par défaut pour les messages */
-}
-.messages .success {
-    background-color: #28a745; /* Vert pour le succès */
-    border: 1px solid #218838;
-}
-.messages .error {
-    background-color: #dc3545; /* Rouge pour les erreurs */
-    border: 1px solid #c82333;
-}
-.messages .warning { /* Si vous utilisez les messages de type warning */
-    background-color: #ffc107;
-    color: #343a40; /* Texte sombre sur fond clair */
-    border: 1px solid #e0a800;
-}
-.messages .info { /* Si vous utilisez les messages de type info */
-    background-color: #17a2b8;
-    border: 1px solid #117a8b;
-}
-
-/* Styles pour les listes d'erreurs des champs de formulaire */
-.errorlist {
-    color: #dc3545; /* Rouge pour les erreurs */
-    list-style: none;
-    padding: 0;
-    margin-top: 5px;
-    font-size: 0.9em;
-}
-.errorlist li {
-    padding: 5px 0; /* Pas de fond, juste le texte */
-}
-
-/* Conteneur pour les champs spécifiques au véhicule (utilisé dans le HTML et JS) */
+/* Vehicle Info Section (hidden/shown by JS) */
 .vehicle-info-section {
-    display: grid; /* Par défaut, utilisez grid comme form-grid */
-    grid-template-columns: repeat(2, 1fr); /* Assurez-vous que cela correspond à votre form-grid */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    /* Sera caché/montré par JS */
+    margin-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
 }
 
-/* --- MEDIA QUERIES --- */
+.vehicle-info-section h3 {
+    grid-column: span 2; /* Le titre prend toute la largeur */
+    margin-bottom: 15px;
+    color: #e0f2f7;
+}
 
+/* Media Queries */
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
@@ -329,7 +266,7 @@ input[type="checkbox"] {
 
 @media (max-width: 600px) {
     .form-grid,
-    .vehicle-info-section { /* Appliquez aussi aux infos véhicule si elles sont affichées */
+    .vehicle-info-section {
         grid-template-columns: 1fr;
     }
     .full-width {

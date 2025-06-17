@@ -3,7 +3,8 @@ from django.contrib.auth.hashers import make_password
 from .models import Utilisateur
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model # Pour obtenir votre modèle Utilisateur
-
+from .models import Trajet
+from datetime import datetime, date
 
 
 Utilisateur = get_user_model() # Récupère le modèle Utilisateur défini dans settings.py
@@ -133,3 +134,54 @@ class UtilisateurProfileForm(forms.ModelForm):
 
         return cleaned_data
     
+class ProposeTripForm(forms.ModelForm):
+    class Meta:
+        model = Trajet
+        fields = [
+            'origine', 'destination', 'date_depart', 'heure_depart',
+            'nombre_places', 'prix_par_place', 'description'
+        ]
+        widgets = {
+            'date_depart': forms.DateInput(attrs={'type': 'date'}),
+            'heure_depart': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_depart = cleaned_data.get('date_depart')
+        heure_depart = cleaned_data.get('heure_depart')
+
+        if date_depart and heure_depart:
+            # Combiner date et heure pour une comparaison complète
+            depart_datetime = datetime.combine(date_depart, heure_depart)
+            # Vérifier que le trajet n'est pas dans le passé
+            if depart_datetime < datetime.now():
+                raise forms.ValidationError("La date et l'heure de départ ne peuvent pas être dans le passé.")
+        return cleaned_data
+
+
+class TrajetSearchForm(forms.Form):
+    origine = forms.CharField(max_length=255, label="Lieu de départ", required=True)
+    destination = forms.CharField(max_length=255, label="Lieu d'arrivée", required=True)
+    date_depart = forms.DateField(
+        label="Date de départ",
+        widget=forms.DateInput(attrs={'type': 'date'}), # Widget HTML5 pour le calendrier
+        required=False # Optionnel, pour permettre une recherche plus large
+    )
+    # L'heure peut être une option de filtre avancé, ou omise pour simplifier
+    # heure_depart = forms.TimeField(
+    #     label="Heure de départ (proche de)",
+    #     widget=forms.TimeInput(attrs={'type': 'time'}),
+    #     required=False
+    # )
+    nombre_places_min = forms.IntegerField(
+        label="Nombre de places requises",
+        min_value=1,
+        initial=1,
+        required=False
+    )
+
+    # Vous pouvez ajouter des champs pour la "position" si vous utilisez des coordonnées
+    # latitude = forms.DecimalField(...)
+    # longitude = forms.DecimalField(...)
+    # rayon_recherche = forms.IntegerField(...)

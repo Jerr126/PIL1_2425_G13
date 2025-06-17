@@ -1,0 +1,72 @@
+{# myapp/templates/myapp/propose_trip.html #}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Proposer un Trajet - Covoiturage{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'convoiturage/css/style_search.css' %}"> {# Réutilise le CSS de recherche #}
+{% endblock %}
+
+{% block content %}
+    <div class="propose-trip-container">
+        <h2>Proposer un Nouveau Trajet</h2>
+
+        {# Pas besoin des messages ici car ils sont déjà dans base.html #}
+
+        <form method="POST" class="propose-trip-form">
+            {% csrf_token %}
+
+            {# Messages d'erreur globaux du formulaire #}
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="form-grid">
+                <div>
+                    <label for="{{ form.origine.id_for_label }}">Lieu de départ</label>
+                    {{ form.origine }}
+                    {% if form.origine.errors %}<ul class="errorlist">{% for error in form.origine.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.destination.id_for_label }}">Lieu d'arrivée</label>
+                    {{ form.destination }}
+                    {% if form.destination.errors %}<ul class="errorlist">{% for error in form.destination.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.date_depart.id_for_label }}">Date de départ</label>
+                    {{ form.date_depart }}
+                    {% if form.date_depart.errors %}<ul class="errorlist">{% for error in form.date_depart.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.heure_depart.id_for_label }}">Heure de départ</label>
+                    {{ form.heure_depart }}
+                    {% if form.heure_depart.errors %}<ul class="errorlist">{% for error in form.heure_depart.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.nombre_places.id_for_label }}">Nombre de places disponibles</label>
+                    {{ form.nombre_places }}
+                    {% if form.nombre_places.errors %}<ul class="errorlist">{% for error in form.nombre_places.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.prix_par_place.id_for_label }}">Prix par place (XOF)</label>
+                    {{ form.prix_par_place }}
+                    {% if form.prix_par_place.errors %}<ul class="errorlist">{% for error in form.prix_par_place.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="full-width">
+                    <label for="{{ form.description.id_for_label }}">Description (optionnel)</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}<ul class="errorlist">{% for error in form.description.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Proposer le Trajet</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

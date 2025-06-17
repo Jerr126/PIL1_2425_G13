@@ -1,0 +1,165 @@
+/* Fichier: myapp/static/css/paramètre.css */
+
+/* 1. Importation de la police Google Fonts */
+/* Assurez-vous que cette URL est correcte et accessible */
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/* 2. Styles généraux du corps de la page */
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #ccc; /* Couleur de fond du body */
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    border-radius: 20px; /* Note: border-radius sur le body peut être difficile à voir ou à appliquer selon le navigateur */
+    width: 100%;
+    background: #444; /* Nouvelle couleur de fond pour le body */
+}
+
+/* 3. Styles du conteneur principal */
+.container {
+    max-width: 480px; /* Largeur maximale pour le contenu sur les écrans plus grands */
+    margin: auto; /* Centre le conteneur horizontalement */
+    background-color: #eee; /* Fond du conteneur */
+    min-height: 100vh; /* S'assure que le conteneur prend au moins toute la hauteur de la vue */
+    padding-bottom: 20px;
+    justify-content: space-between; /* Peut ne pas avoir d'effet ici si le container n'est pas flex ou grid */
+}
+
+/* 4. Styles de l'en-tête (Settings) */
+.header {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+    background-color: #014886; /* Couleur de fond de l'en-tête */
+    color: #fff; /* Couleur du texte de l'en-tête */
+    position: relative; /* Utile si des éléments sont positionnés absolument par rapport à l'en-tête */
+    top: 0;
+    z-index: 10;
+    border-radius: 30px; /* Arrondi les coins de l'en-tête */
+}
+
+/* 5. Styles de chaque section (groupes d'éléments) */
+.section {
+    width: 100%;
+    height: 100%; /* Peut causer des problèmes si vous avez beaucoup de sections, considérez 'auto' */
+    display: flex;
+    justify-content: space-around; /* Distribue les 'item' à l'intérieur */
+    z-index: 5;
+}
+
+/* 6. Styles des éléments individuels (Account, Privacy, etc.) */
+.item {
+    display: flex; /* Active Flexbox pour aligner le contenu (icône, texte, flèche) */
+    padding: 16px; /* Espacement interne */
+    border-top: 1px solid #f0f0f0;
+    cursor: pointer;
+    list-style: none; /* Supprime les puces de liste */
+    justify-content: space-between; /* Espace entre l'icône/texte et la flèche */
+    align-items: center; /* Centre verticalement les éléments */
+    flex-wrap: nowrap;
+    transform: translateY(-25px); /* Décale l'élément vers le haut */
+}
+
+.item:first-child {
+    border-top: none; /* Supprime la bordure supérieure du premier élément */
+}
+
+/* 7. Styles de l'icône dans chaque élément */
+/* Note: '.icon' est défini deux fois, la deuxième définition est plus spécifique et prendra le dessus */
+.icon {
+    font-size: 20px; /* Taille de la police pour l'icône */
+    width: 30px;
+    justify-content: space-between; /* Peut ne pas avoir d'effet sans display:flex sur cet élément */
+}
+
+/* 8. Styles du texte dans chaque élément (ex: Account, Privacy) */
+.text {
+    font-size: 20px;
+    flex-wrap: nowrap;
+    white-space: nowrap; /* Empêche le texte de passer à la ligne */
+}
+
+/* 9. Styles du pied de page */
+.footer {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    padding: 16px;
+    border-top: 1px solid #eee;
+    background-color: #eee;
+    transform: translateY(330px); /* Décale le footer vers le bas. Assurez-vous que cela ne cause pas de chevauchement. */
+}
+
+/* 10. Styles des liens <a> à l'intérieur des listes (correction des sélecteurs) */
+/* Cible les liens directs à l'intérieur des li */
+.container ul li a {
+    position: relative;
+    color: #222; /* Couleur du texte du lien */
+    align-items: center;
+    text-decoration: none; /* Supprime le soulignement */
+    display: flex; /* Active Flexbox pour aligner l'icône, le texte et la flèche */
+    justify-content: center; /* Centre horizontalement le contenu du lien */
+    min-width: 238px;
+    padding: 0 10px;
+    opacity: 2; /* Opacité maximum est 1, 2 n'a pas d'effet supplémentaire */
+    height: 50px;
+    width: 100%; /* Prend toute la largeur disponible */
+    margin-left: -7px;
+    background: #f0f0f0;
+    border: 2px solid #014886;
+    border-radius: 50px;
+    align-items: center; /* Centre verticalement le contenu du lien */
+}
+
+/* 11. Redéfinition du style d'icône pour les liens */
+/* Cette règle est plus spécifique et prendra le dessus sur la première '.icon' */
+.container ul li a .icon {
+    color: #222; /* Couleur des icônes dans les liens */
+    margin-left: -25px; /* Décale l'icône vers la gauche */
+    margin-right: 15px; /* Espace à droite de l'icône */
+}
+
+/* 12. Styles de la section (qui est probablement un conteneur d'items, pas un 'section' HTML direct dans le code fourni) */
+/* Vérifiez si vous utilisez une balise <section> ou si c'est une classe sur un <div> */
+/* Basé sur le HTML fourni, '.section' est un div. Ces styles s'appliquent à ce div. */
+.container .section { /* Plus spécifique que '.section' seul, si nécessaire */
+    border-bottom: none; /* Probablement en conflit avec les bordures des items */
+    border-radius: 16px;
+    background-color: #014886; /* Fond pour la section elle-même */
+    box-shadow: 0 2px 5px;
+    margin-bottom: 20px;
+    list-style: none; /* N'a pas d'effet sur un div */
+    align-items: center; /* N'a pas d'effet sans display:flex ou grid */
+}
+
+/* 13. Styles des éléments de liste <li> */
+.container ul li {
+    list-style: none; /* Supprime les puces de liste */
+    text-decoration: none; /* N'a pas d'effet sur un li, s'applique aux liens */
+    align-items: center; /* N'a pas d'effet sans display:flex ou grid */
+}
+
+/* 14. Styles du texte dans les liens de liste */
+.container ul li a .text {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    position: absolute; /* Positionne le texte absolument, attention aux chevauchements */
+    letter-spacing: 0.05em;
+    margin-right: 20px;
+    transform: translateY(5px);
+    align-items: center;
+}
+
+
+/* 15. Styles de l'icône de flèche (>) */
+.arrow-icon {
+    color: #888;
+    padding-left: 350px; /* Gros padding pour pousser la flèche à droite. Peut être mieux géré avec flexbox. */
+    transform: translateY(-5px);
+}

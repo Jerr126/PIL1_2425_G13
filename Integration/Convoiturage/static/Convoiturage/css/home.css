@@ -1,22 +1,16 @@
 /* assets/css/style_home.css */
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-
-body {
-    background: #2b2a2a; /* Fond du corps */
-    color: #333; /* Couleur de texte par défaut */
-    font-family: 'Montserrat', sans-serif;
-    padding: 20px; /* Padding autour du corps */
-}
+/* Note: Les styles généraux comme body, h1, a, input, etc.
+   sont dans global.css. Ce fichier contient les styles spécifiques à la page home. */
 
 .home-container {
     max-width: 900px;
     margin: 40px auto;
-    background: #013069; /* Couleur de fond du conteneur principal */
+    background: #013069;
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     padding: 30px;
-    color: #fff; /* Texte blanc sur fond sombre */
+    color: #fff;
 }
 
 .home-header {
@@ -27,19 +21,18 @@ body {
 .home-header h2 {
     font-size: 2.5em;
     margin-bottom: 10px;
-    color: #e0f2f7; /* Couleur plus claire pour le titre */
+    color: #e0f2f7;
 }
 
 .home-header p {
     font-size: 1.1em;
-    color: #a7d9f5; /* Couleur plus claire pour le paragraphe */
+    color: #a7d9f5;
 }
 
-/* Sections */
 section {
     margin-bottom: 30px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.05); /* Fond légèrement transparent pour les sections */
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -77,17 +70,17 @@ section h3 {
 }
 
 .badge-conducteur {
-    background-color: #28a745; /* Vert */
+    background-color: #28a745;
     color: white;
 }
 
 .badge-passager {
-    background-color: #007bff; /* Bleu */
+    background-color: #007bff;
     color: white;
 }
 
-.badge-none {
-    background-color: #6c757d; /* Gris */
+.badge-none { /* Au cas où aucun statut n'est défini */
+    background-color: #6c757d;
     color: white;
 }
 
@@ -96,21 +89,8 @@ section h3 {
     margin-top: 25px;
 }
 
-/* Boutons */
-.btn {
-    display: inline-block;
-    padding: 12px 25px;
-    font-size: 1.1em;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-
 .btn-primary-home {
-    background-color: #0056b3; /* Bleu plus foncé pour le bouton principal */
+    background-color: #0056b3;
     color: white;
 }
 
@@ -160,37 +140,7 @@ section h3 {
     color: #a7d9f5;
 }
 
-/* Section d'activité récente (commentée dans le HTML) */
-.recent-activity {
-    margin-top: 40px;
-}
-
-.recent-activity .trip-list {
-    list-style: none;
-    padding: 0;
-}
-
-.recent-activity .trip-list li {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.recent-activity .trip-list li a {
-    color: #87ceeb;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.recent-activity .trip-list li a:hover {
-    text-decoration: underline;
-}
-
-/* Media Queries pour la responsivité */
+/* Media Queries */
 @media (max-width: 768px) {
     .home-container {
         padding: 20px;
@@ -199,14 +149,11 @@ section h3 {
         font-size: 2em;
     }
     .action-grid {
-        grid-template-columns: 1fr; /* Une seule colonne sur petits écrans */
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 480px) {
-    body {
-        padding: 15px;
-    }
     .home-container {
         margin: 20px auto;
         border-radius: 15px;
