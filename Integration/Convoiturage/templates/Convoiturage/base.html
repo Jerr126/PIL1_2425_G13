@@ -1,17 +1,63 @@
-{% load static %}
+{# myapp/templates/base.html #}
+{% load static %} {# Très important : pour utiliser le tag 'static' #}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ice</title>
-    <link rel="stylesheet" href="{% static 'Convoiturage/css/style.css'%}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>{% block title %}Mon Application Django{% endblock %}</title>
+
+    {# Styles CSS GLOBALS #}
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    {# Optionnel: Inclure Font Awesome pour les icônes si utilisé globalement #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    {# BLOC POUR LES STYLES CSS SPÉCIFIQUES À CHAQUE PAGE #}
+    {% block extra_css %}{% endblock %}
+
 </head>
 <body>
-    {% block content %} 
-    
-    {% endblock %}
-   
-  </body>
+
+    {# En-tête / Barre de navigation commune #}
+    <nav class="main-nav">
+        <ul>
+            <li>
+                {# Le lien "Accueil" est actif si l'URL actuelle est l'URL de 'home' #}
+                <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Accueil</a>
+            </li>
+            <li>
+                {# Le lien "Mon Profil" est actif si l'URL actuelle est l'URL de 'profile' #}
+                <a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Mon Profil</a>
+            </li>
+            {# Ajoutez d'autres liens de navigation communs ici #}
+            {% if user.is_authenticated %}
+                <li>
+                    {# Pour la déconnexion, il n'y a pas vraiment d'état actif permanent, mais vous pouvez styliser #}
+                    <a href="{% url 'logout' %}">Déconnexion</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'login' %}" class="{% if request.resolver_match.url_name == 'login' %}active{% endif %}">Connexion</a>
+                </li>
+                <li>
+                    <a href="{% url 'register' %}" class="{% if request.resolver_match.url_name == 'register' %}active{% endif %}">Inscription</a> {# Si vous avez une page d'inscription #}
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %} {# BLOC PRINCIPAL POUR LE CONTENU DE LA PAGE #}
+    </main>
+
+    {# Ici, vous pourriez avoir un pied de page commun #}
+    <footer>
+        <p>&copy; 2025 Mon Application. Tous droits réservés.</p>
+    </footer>
+
+    {# BLOC POUR LES SCRIPTS JS SPÉCIFIQUES À CHAQUE PAGE #}
+    {% block extra_js %}{% endblock %}
+
+</body>
 </html>

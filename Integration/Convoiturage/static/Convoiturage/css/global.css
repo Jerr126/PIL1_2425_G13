@@ -1,0 +1,40 @@
+/* assets/css/global.css */
+
+/* ... (votre code CSS global existant) ... */
+
+/* Styles de navigation (main-nav) */
+.main-nav {
+    background-color: #013069;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.main-nav a {
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.main-nav a:hover {
+    background-color: #004085; /* Couleur de survol */
+    text-decoration: none;
+}
+
+/* Style pour le lien de navigation ACTIF */
+.main-nav a.active {
+    background-color: #005A9B; /* Une couleur distincte pour l'état actif, par exemple un bleu plus clair */
+    color: #e0f2f7; /* Texte légèrement plus clair pour l'actif */
+    pointer-events: none; /* Rendre le lien inactif si c'est la page actuelle */
+    cursor: default; /* Curseur par défaut */
+}
+
+/* ... (le reste de votre code CSS global) ... */

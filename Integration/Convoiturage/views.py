@@ -52,3 +52,28 @@ def register_passager(request):
 
 def registration_success(request):
     return render(request, 'Convoiturage/registration_success.html')
+
+
+# myapp/views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+# Importez votre modèle Utilisateur si vous avez besoin de récupérer des infos spécifiques
+# from .models import Utilisateur
+
+@login_required
+def home_view(request):
+    """
+    Vue de la page d'accueil personnalisée après connexion.
+    """
+    user = request.user # L'utilisateur connecté
+
+    # Vous pouvez ajouter ici la logique pour récupérer d'autres données
+    # Exemple: Récupérer les 3 derniers trajets de l'utilisateur s'ils existent
+    # recent_trips = Trip.objects.filter(user=user).order_by('-date')[:3]
+
+    context = {
+        'user': user,
+        'welcome_message': f"Bienvenue, {user.first_name or user.username} !",
+        # 'recent_trips': recent_trips, # Ajoutez ceci si vous avez un modèle Trip
+    }
+    return render(request, 'myapp/home.html', context)

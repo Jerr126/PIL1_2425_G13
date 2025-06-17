@@ -1,0 +1,224 @@
+/* assets/css/style_home.css */
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+    background: #2b2a2a; /* Fond du corps */
+    color: #333; /* Couleur de texte par défaut */
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px; /* Padding autour du corps */
+}
+
+.home-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #013069; /* Couleur de fond du conteneur principal */
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    color: #fff; /* Texte blanc sur fond sombre */
+}
+
+.home-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.home-header h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #e0f2f7; /* Couleur plus claire pour le titre */
+}
+
+.home-header p {
+    font-size: 1.1em;
+    color: #a7d9f5; /* Couleur plus claire pour le paragraphe */
+}
+
+/* Sections */
+section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05); /* Fond légèrement transparent pour les sections */
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+section h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #e0f2f7;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+/* Badges de Statut */
+.status-badges {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.badge i {
+    font-size: 1.2em;
+}
+
+.badge-conducteur {
+    background-color: #28a745; /* Vert */
+    color: white;
+}
+
+.badge-passager {
+    background-color: #007bff; /* Bleu */
+    color: white;
+}
+
+.badge-none {
+    background-color: #6c757d; /* Gris */
+    color: white;
+}
+
+.status-action {
+    text-align: center;
+    margin-top: 25px;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary-home {
+    background-color: #0056b3; /* Bleu plus foncé pour le bouton principal */
+    color: white;
+}
+
+.btn-primary-home:hover {
+    background-color: #004085;
+    transform: translateY(-2px);
+}
+
+/* Grille d'actions rapides */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-card:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.action-card i {
+    font-size: 3em;
+    margin-bottom: 15px;
+    color: #e0f2f7;
+}
+
+.action-card span {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.action-card p {
+    font-size: 0.9em;
+    color: #a7d9f5;
+}
+
+/* Section d'activité récente (commentée dans le HTML) */
+.recent-activity {
+    margin-top: 40px;
+}
+
+.recent-activity .trip-list {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-activity .trip-list li {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recent-activity .trip-list li a {
+    color: #87ceeb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.recent-activity .trip-list li a:hover {
+    text-decoration: underline;
+}
+
+/* Media Queries pour la responsivité */
+@media (max-width: 768px) {
+    .home-container {
+        padding: 20px;
+    }
+    .home-header h2 {
+        font-size: 2em;
+    }
+    .action-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur petits écrans */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+    .home-container {
+        margin: 20px auto;
+        border-radius: 15px;
+    }
+    .home-header h2 {
+        font-size: 1.8em;
+    }
+    section {
+        padding: 15px;
+    }
+    .btn {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}

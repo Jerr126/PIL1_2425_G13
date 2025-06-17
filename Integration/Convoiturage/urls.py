@@ -8,5 +8,5 @@ urlpatterns = [
     path('success/', views.success_view, name='success_page'),
     path('register_conducteur/', views.register_passager, name='register_passager'),
     path('register/success/', views.registration_success, name='registration_success'),
-
+    path('home/', views.home_view, name='home_alt'), # Une alternative si vous préférez '/home/'
 ]
