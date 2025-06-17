@@ -69,7 +69,7 @@
                 {% csrf_token %} {# Jetons CSRF pour la sécurité - OBLIGATOIRE #}
                 <h2 class="title">Inscription</h2>
 
-                {# Les champs 'username' et 'last_name' viennent d'AbstractUser, donc ils sont automatiquement inclus dans UserRegistrationForm #}
+                {# Les champs 'first_name' et 'last_name' viennent d'AbstractUser, donc ils sont automatiquement inclus dans UserRegistrationForm #}
                 <div class="input-field">
                     <i class="fas fa-user"></i>
                     {# Pour le prénom #}
@@ -106,26 +106,18 @@
 
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    {{ registration_form.password.as_widget }} {# Premier champ de mot de passe de UserCreationForm (password1) #}
+                    {{ registration_form.password1.as_widget }} {# Premier champ de mot de passe de UserCreationForm (password1) #}
                 </div>
-                {% if registration_form.password.errors %}<ul class="errorlist">{% for error in registration_form.password.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                {% if registration_form.password1.errors %}<ul class="errorlist">{% for error in registration_form.password1.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
                 <div class="input-field">
                     {# Champ de confirmation du mot de passe #}
                     <i class="fas fa-lock"></i>
-                    {{ registration_form.password_confirm.as_widget }} {# Deuxième champ de mot de passe de UserCreationForm (password2) #}
+                    {{ registration_form.password2.as_widget }} {# Deuxième champ de mot de passe de UserCreationForm (password2) #}
                 </div>
-                {% if registration_form.password_confirm.errors %}<ul class="errorlist">{% for error in registration_form.password_confirm.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                {% if registration_form.password2.errors %}<ul class="errorlist">{% for error in registration_form.password2.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
-                {# Champ pour la photo de profil #}
-                {# Ce champ rendra un <input type="file">. Vous devrez peut-être styliser ce type d'input via CSS. #}
-                <div class="input-field file-input-field"> {# Ajouter une classe pour le style #}
-                    <i class="fas fa-image"></i>
-                    {{ registration_form.profile_picture.label_tag }} {# Affiche le label "Photo de profil" #}
-                    {{ registration_form.profile_picture }}
-                </div>
-                {% if registration_form.profile_picture.errors %}<ul class="errorlist">{% for error in registration_form.profile_picture.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
-
+                
                 {# Champ is_conducteur (checkbox) #}
                 <div class="form-group checkbox-field">
                     {{ registration_form.is_conducteur.label_tag }} {# Affiche le label de la checkbox #}
@@ -146,6 +138,30 @@
                 </div>
                 {% if registration_form.matricule.errors %}<ul class="errorlist">{% for error in registration_form.matricule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
+                     {% if registration_form.errors %}
+                        <div class="alert alert-danger">
+                            <p>Veuillez corriger les erreurs suivantes :</p>
+                            <ul>
+                                {% for field, errors in registration_form.errors.items %}
+                                    <li><strong>{{ field }} :</strong>
+                                        <ul>
+                                            {% for error in errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {# Ou pour des erreurs spécifiques à un champ #}
+                    {{ registration_form.first_name.errors }}
+                    {{ registration_form.email.errors }}
+                    {{ registration_form.password.errors }}
+                    {{ registration_form.password_confirm.errors }}
+                    {{ registration_form.type_vehicule.errors }}
+                    {{ registration_form.matricule.errors }}
 
                 {# Affichage des erreurs non liées à un champ spécifique pour l'inscription #}
                 {% if registration_form.non_field_errors %}
@@ -153,7 +169,7 @@
                 {% endif %}
 
                 <input type="submit" value="S'inscrire" class="btn" name="register_submit"> {# Ajout de 'name' pour la distinction dans la vue #}
-                <div class="options">
+                <!--<div class="options">
                     <label><input type="checkbox" name="remember"> Se souvenir du mot de passe</label> {# Le champ 'remember' devra être géré manuellement ou via une librairie Django #}
                 </div>
                 <p class="social-text">Ou S'inscrire avec</p>
@@ -162,7 +178,7 @@
                     <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+                </div>-->
             </form>
         </div>
 
@@ -173,7 +189,7 @@
                     <p>De nouveaux trajets vous attendent chaque jour<br>Connectez-vous pour en profiter dès maintenant</p>
                     <button class="btn transparent" id="sign-in-btn">Se connecter</button>
                 </div>
-                <img src="{% static 'Connvoiturage/img/ice.jpg' %}" alt="Image de bienvenue" class="image"> {# Chemin vers votre image #}
+                <img src="{% static 'Convoiturage/img/ice.jpg' %}" alt="Image de bienvenue" class="image"> {# Chemin vers votre image #}
             </div>
             <div class="panel right-panel">
                 <div class="content">

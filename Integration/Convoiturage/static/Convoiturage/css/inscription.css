@@ -18,8 +18,8 @@ body {
 
 .container {
     position: relative;
-    width: 70vw;
-    height: 80vh;
+    width: 80vw;
+    height: 90vh;
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
@@ -86,9 +86,9 @@ form.sign-up-form {
 /* Style des champs de saisie et de leurs icônes */
 .input-field {
     width: 100%;
-    height: 50px;
+    height: 35px;
     background: #f0f0f0;
-    margin: 10px 0;
+    margin: 5px 0px;
     border: 2px solid #014886;
     border-radius: 50px;
     display: flex;
@@ -114,6 +114,7 @@ form.sign-up-form {
     font-size: 18px;
     font-weight: 600;
     color: #444;
+    padding: 10px; /* Ajout d'un padding pour un meilleur espacement */
 }
 
 /* Styles pour les checkboxes et leurs labels.
@@ -128,13 +129,13 @@ form.sign-up-form {
 }
 
 .checkbox-field label {
-    margin-right: 10px; /* Espace entre le label et la checkbox */
+    margin-right: 5px; /* Espace entre le label et la checkbox */
     cursor: pointer;
 }
 
 .checkbox-field input[type="checkbox"] {
     width: auto; /* Pour que la checkbox garde sa taille standard */
-    height: auto;
+    height: 20px;
     margin-right: 5px;
     cursor: pointer;
 }
