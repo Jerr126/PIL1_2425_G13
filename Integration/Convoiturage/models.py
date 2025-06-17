@@ -31,7 +31,7 @@ class Utilisateur(AbstractUser):
     matricule = models.CharField(max_length=50, blank=True, null=True)
 
     # Photo de profil
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True, default='profile_pics/profile.png')
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True, default='profile_pics/profile.jpg')
 
     def str(self):
         # Utilise le nom complet s'il existe, sinon le nom d'utilisateur

@@ -9,4 +9,5 @@ urlpatterns = [
     path('register/', views.login_register_view, name='register'), # Pour le traitement du POST d'inscription
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile_view, name='profile'),
+    path('accounts/profile/', views.profile_view, name='profile'),
 ]

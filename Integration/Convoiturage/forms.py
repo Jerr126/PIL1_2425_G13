@@ -75,14 +75,14 @@ class UserRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         # Ici, vous pouvez ajouter une logique spécifique avant de sauvegarder l'utilisateur,
-        user.set_password(self.cleaned_data["password"]) # Utilisez set_password pour hacher
+        user.set_password(self.cleaned_data["password1"]) # Utilisez set_password pour hacher
         if commit:
             user.save()
         return user
 
 class ConnexionForm(AuthenticationForm):
     # Cette classe reste la même, elle gère la connexion pour n'importe quel modèle User
-    username = forms.CharField(label="Email ou Nom d'utilisateur", widget=forms.TextInput(attrs={'placeholder': 'Email ou Nom d\'utilisateur'}))
+    username = forms.CharField(label="Nom d'utilisateur", widget=forms.TextInput(attrs={'placeholder': 'Nom d\'utilisateur'}))
     password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput(attrs={'placeholder': 'Mot de passe'}))    
 
 
@@ -103,7 +103,7 @@ class UtilisateurProfileForm(forms.ModelForm):
     class Meta:
         model = Utilisateur
         fields = [
-            'username', 'last_name', 'email', 'num_tel',
+            'username', 'first_name', 'last_name', 'email', 'num_tel',
             'is_conducteur', 'type_vehicule', 'matricule', 
             'profile_picture'
         ]

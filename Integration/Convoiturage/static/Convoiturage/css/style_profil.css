@@ -50,6 +50,7 @@ body {
     margin: auto;
     cursor: pointer;
     transition: 0.3s;
+    padding-bottom: 10px;
 }
 
 .profile-picture:hover {
@@ -253,10 +254,6 @@ input[type="checkbox"] {
 .emoji-edit {
     cursor: pointer;
     font-size: 18px;
-    /* Positionnement absolu : nécessite que le parent soit positionné (relative, absolute, fixed, sticky) */
-    position: absolute;
-    right: 10px; /* Ajustez selon votre besoin */
-    top: 50%; /* Centre verticalement par rapport au parent */
     transform: translateY(-50%); /* Ajustement pour le centrage parfait */
     color: #bbb; /* Rendre l'emoji visible sur fond sombre */
 }

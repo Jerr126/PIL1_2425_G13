@@ -39,7 +39,7 @@ def login_register_view(request):
                 # Optionnel: connecter l'utilisateur immédiatement après l'inscription
                 login(request, user)
                 messages.success(request, 'Votre compte a été créé avec succès !')
-                return redirect('prolfile') # Rediriger vers la page de profil
+                return redirect('profile')
             else:
                 messages.error(request, 'Veuillez corriger les erreurs d\'inscription.')
 
