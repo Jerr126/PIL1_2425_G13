@@ -4,9 +4,9 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('login/', views.login_view, name='login'),
-    path('success/', views.success_view, name='success_page'),
-    path('register_conducteur/', views.register_passager, name='register_passager'),
-    path('register/success/', views.registration_success, name='registration_success'),
-
+    path('login_register/', views.login_register_view, name='login_register'),
+    path('login/', views.login_register_view, name='login'), # Pour le traitement du POST de connexion
+    path('register/', views.login_register_view, name='register'), # Pour le traitement du POST d'inscription
+    path('logout/', views.logout_view, name='logout'),
+    path('profile/', views.profile_view, name='profile'),
 ]

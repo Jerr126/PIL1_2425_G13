@@ -35,7 +35,7 @@ A PROPOS DES TESTS ET DES BUGS:
 les tests ont surtout concernés la coformité des types de données, leur enregistrement, leur manipulation et en fin la manipulation des variables.
 
 
-LANCEMENT DU PROJET AVEC DJANGO:
+LANCEMENT (local) DU PROJET AVEC DJANGO:
 
 pour ce faire suivre les étapes :
   - Cloner le dépôt Git : git clone votre_repo_github.git

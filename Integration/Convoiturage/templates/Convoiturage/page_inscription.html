@@ -1,95 +1,213 @@
+{% load static %} {# <-- TRÈS IMPORTANT : charge le tag 'static' #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# Lien vers Font Awesome - reste inchangé car c'est une ressource externe #}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-    <link rel="stylesheet" href="asset/css/inscription.css">
+    {# Lien vers votre fichier CSS d'inscription. Assurez-vous qu'il est dans Convoiturage/static/Convoiturage/css/ #}
+    <link rel="stylesheet" href="{% static 'Convoiturage/css/inscription.css' %}">
     <title>Connexion-Inscription</title>
 </head>
 
 <body>
     <div class="container">
         <div class="signin-signup">
-            <form action="" class="sign-in-form">
+            {# FORMULAIRE DE CONNEXION #}
+            <form action="{% url 'login' %}" method="post" class="sign-in-form">
+                {% csrf_token %} {# Jetons CSRF pour la sécurité - OBLIGATOIRE pour les formulaires POST #}
                 <h2 class="title">Connexion</h2>
+
+                {# Affichage des messages Django (succès, erreur, info) #}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Nom d'utilisateur">
+                    {# Rend le champ 'username' de votre formulaire de connexion. L'attribut placeholder est défini dans le widget du formulaire Django. #}
+                    {{ login_form.username.as_widget }}
                 </div>
-                <div class=" input-field ">
+                {# Affichage des erreurs spécifiques au champ 'username' #}
+                {% if login_form.username.errors %}<ul class="errorlist">{% for error in login_form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Mot de passe">
+                    {# Rend le champ 'password' de votre formulaire de connexion. #}
+                    {{ login_form.password.as_widget }}
                 </div>
-                <input type="submit" value="Se connecter" class="btn">
+                {# Affichage des erreurs spécifiques au champ 'password' #}
+                {% if login_form.password.errors %}<ul class="errorlist">{% for error in login_form.password.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                {# Affichage des erreurs non liées à un champ spécifique (ex: identifiants incorrects) #}
+                {% if login_form.non_field_errors %}
+                    <ul class="errorlist">{% for error in login_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+
+                <input type="submit" value="Se connecter" class="btn" name="login_submit"> {# Ajout de 'name' pour la distinction dans la vue #}
                 <div class="options">
-                    <a href="#">Mot de passe oublié ?</a>
+                    <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a> {# Lien vers votre page de réinitialisation de mot de passe #}
                 </div>
                 <p class="social-text">Ou Se connecter avec</p>
                 <div class="social-media">
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-google"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </form>
-            <form action="" class="sign-up-form">
+
+            {# FORMULAIRE D'INSCRIPTION #}
+            {# Ajouter enctype="multipart/form-data" si vous avez des champs de fichier (comme profile_picture) #}
+            <form action="{% url 'register' %}" method="post" class="sign-up-form" enctype="multipart/form-data">
+                {% csrf_token %} {# Jetons CSRF pour la sécurité - OBLIGATOIRE #}
                 <h2 class="title">Inscription</h2>
+
+                {# Les champs 'username' et 'last_name' viennent d'AbstractUser, donc ils sont automatiquement inclus dans UserRegistrationForm #}
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Nom d'utilisateur">
+                    {# Pour le prénom #}
+                    {{ registration_form.first_name.as_widget }}
                 </div>
+                {% if registration_form.first_name.errors %}<ul class="errorlist">{% for error in registration_form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    {# Pour le nom #}
+                    {{ registration_form.last_name.as_widget }}
+                </div>
+                {% if registration_form.last_name.errors %}<ul class="errorlist">{% for error in registration_form.last_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                {# Le champ 'username' de UserCreationForm #}
+                <div class="input-field">
+                    <i class="fas fa-id-card"></i> {# Icône pour le nom d'utilisateur #}
+                    {{ registration_form.username.as_widget }} {# Peut être défini ici si non dans le form Django #}
+                </div>
+                {% if registration_form.username.errors %}<ul class="errorlist">{% for error in registration_form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+
                 <div class="input-field">
                     <i class="fas fa-envelope"></i>
-                    <input type="text" placeholder="Email">
+                    {{ registration_form.email.as_widget }}
                 </div>
+                {% if registration_form.email.errors %}<ul class="errorlist">{% for error in registration_form.email.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
                 <div class="input-field">
                     <i class="fas fa-phone"></i>
-                    <input type="text" placeholder="Numero">
+                    {{ registration_form.num_tel.as_widget }}
                 </div>
-                <div class=" input-field ">
+                {% if registration_form.num_tel.errors %}<ul class="errorlist">{% for error in registration_form.num_tel.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Mot de passe">
+                    {{ registration_form.password.as_widget }} {# Premier champ de mot de passe de UserCreationForm (password1) #}
                 </div>
-                <div class=" input-field ">
+                {% if registration_form.password.errors %}<ul class="errorlist">{% for error in registration_form.password.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                <div class="input-field">
+                    {# Champ de confirmation du mot de passe #}
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Confirmer mot de passe">
+                    {{ registration_form.password_confirm.as_widget }} {# Deuxième champ de mot de passe de UserCreationForm (password2) #}
                 </div>
-                <input type="submit" value="S'inscrire" class="btn">
+                {% if registration_form.password_confirm.errors %}<ul class="errorlist">{% for error in registration_form.password_confirm.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                {# Champ pour la photo de profil #}
+                {# Ce champ rendra un <input type="file">. Vous devrez peut-être styliser ce type d'input via CSS. #}
+                <div class="input-field file-input-field"> {# Ajouter une classe pour le style #}
+                    <i class="fas fa-image"></i>
+                    {{ registration_form.profile_picture.label_tag }} {# Affiche le label "Photo de profil" #}
+                    {{ registration_form.profile_picture }}
+                </div>
+                {% if registration_form.profile_picture.errors %}<ul class="errorlist">{% for error in registration_form.profile_picture.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                {# Champ is_conducteur (checkbox) #}
+                <div class="form-group checkbox-field">
+                    {{ registration_form.is_conducteur.label_tag }} {# Affiche le label de la checkbox #}
+                    {{ registration_form.is_conducteur }} {# Rend la checkbox #}
+                </div>
+                {% if registration_form.is_conducteur.errors %}<ul class="errorlist">{% for error in registration_form.is_conducteur.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                {# Champs spécifiques au conducteur, masqués/affichés par JS #}
+                <div class="input-field driver-specific" style="display:none;"> {# Utilisez 'display: none;' par défaut, votre JS gérera l'affichage #}
+                    <i class="fas fa-car"></i>
+                    {{ registration_form.type_vehicule.as_widget }}
+                </div>
+                {% if registration_form.type_vehicule.errors %}<ul class="errorlist">{% for error in registration_form.type_vehicule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+                <div class="input-field driver-specific" style="display:none;">
+                    <i class="fas fa-id-badge"></i> {# Icône pour matricule #}
+                    {{ registration_form.matricule.as_widget }}
+                </div>
+                {% if registration_form.matricule.errors %}<ul class="errorlist">{% for error in registration_form.matricule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+
+
+                {# Affichage des erreurs non liées à un champ spécifique pour l'inscription #}
+                {% if registration_form.non_field_errors %}
+                    <ul class="errorlist">{% for error in registration_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+
+                <input type="submit" value="S'inscrire" class="btn" name="register_submit"> {# Ajout de 'name' pour la distinction dans la vue #}
                 <div class="options">
-                    <label><input type="checkbox" name="remember"> Se souvenir du mot de passe</label>
+                    <label><input type="checkbox" name="remember"> Se souvenir du mot de passe</label> {# Le champ 'remember' devra être géré manuellement ou via une librairie Django #}
+                </div>
+                <p class="social-text">Ou S'inscrire avec</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </form>
         </div>
-        <div class=" panels-container ">
+
+        <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
-                    <h3>Dejà sur ICE?</h3>
+                    <h3>Déjà sur ICE?</h3>
                     <p>De nouveaux trajets vous attendent chaque jour<br>Connectez-vous pour en profiter dès maintenant</p>
-                    <button class="btn" id="sign-in-btn">Se connecter</button>
+                    <button class="btn transparent" id="sign-in-btn">Se connecter</button>
                 </div>
-                <img src="asset/ressources/img/ice.jpg" alt="" class="image">
+                <img src="{% static 'Connvoiturage/img/ice.jpg' %}" alt="Image de bienvenue" class="image"> {# Chemin vers votre image #}
             </div>
             <div class="panel right-panel">
                 <div class="content">
                     <h3>Nouveau sur ICE?</h3>
                     <p>Rejoignez ICE maintenant<br>Trouvez ou proposez facilement un trajet et voyagez à moindre coût avec d'autres passagers</p>
-                    <button class="btn" id="sign-up-btn">S'inscrire</button>
+                    <button class="btn transparent" id="sign-up-btn">S'inscrire</button>
                 </div>
-                <img src="asset/ressources/img/ice.jpg" alt="" class="image">
+                <img src="{% static 'Convoiturage/img/ice.jpg' %}" alt="Image de bienvenue" class="image"> {# Chemin vers votre image #}
             </div>
         </div>
     </div>
-    <script src="asset/js/inscription.js"></script>
+    {# Votre script JavaScript pour le basculement des formulaires #}
+    <script src="{% static 'Convoiturage/js/inscription.js' %}"></script>
+    {# Script JavaScript pour gérer l'affichage/masquage des champs spécifiques au conducteur #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Assurez-vous que l'ID correspond à celui généré par Django pour la checkbox is_conducteur
+            const isConducteurCheckbox = document.getElementById('id_is_conducteur');
+            const driverSpecificFields = document.querySelectorAll('.driver-specific');
+
+            function toggleDriverFields() {
+                driverSpecificFields.forEach(field => {
+                    // Si la checkbox est cochée, afficher les champs, sinon les masquer
+                    field.style.display = isConducteurCheckbox.checked ? 'flex' : 'none';
+                });
+            }
+
+            // Appeler la fonction une première fois au chargement de la page pour initialiser l'état
+            toggleDriverFields();
+
+            // Écouter les changements sur la checkbox
+            isConducteurCheckbox.addEventListener('change', toggleDriverFields);
+        });
+    </script>
 </body>
 
 </html>

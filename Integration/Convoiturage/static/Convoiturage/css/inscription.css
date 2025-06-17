@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/* Réinitialisation de base et police */
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +26,7 @@ body {
     overflow: hidden;
 }
 
+/* Pseudo-élément pour l'animation du fond */
 .container::before {
     content: "";
     position: absolute;
@@ -31,12 +34,13 @@ body {
     left: -50%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(-45deg, #014886, #015A9B);
+    background: linear-gradient(-45deg, #014886, #015A9B); /* Vos couleurs de dégradé */
     z-index: 6;
     transform: translateX(100%);
     transition: 1s ease-in-out;
 }
 
+/* Conteneur des formulaires de connexion et d'inscription */
 .signin-signup {
     position: absolute;
     top: 0;
@@ -49,6 +53,7 @@ body {
     z-index: 5;
 }
 
+/* Styles généraux pour tous les formulaires */
 form {
     display: flex;
     align-items: center;
@@ -59,6 +64,7 @@ form {
     padding: 0 10px;
 }
 
+/* Opacité initiale pour l'animation */
 form.sign-in-form {
     opacity: 1;
     transition: 0.5s ease-in-out;
@@ -77,6 +83,7 @@ form.sign-up-form {
     margin-bottom: 10px;
 }
 
+/* Style des champs de saisie et de leurs icônes */
 .input-field {
     width: 100%;
     height: 50px;
@@ -86,6 +93,7 @@ form.sign-up-form {
     border-radius: 50px;
     display: flex;
     align-items: center;
+    /* Assurez-vous que ceci fonctionne bien pour les champs de fichier et les checkboxes */
 }
 
 .input-field i {
@@ -95,6 +103,8 @@ form.sign-up-form {
     font-size: 18px;
 }
 
+/* Style des inputs à l'intérieur de .input-field */
+/* Ces règles s'appliqueront aux inputs générés par Django */
 .input-field input {
     flex: 5;
     background: none;
@@ -105,6 +115,64 @@ form.sign-up-form {
     font-weight: 600;
     color: #444;
 }
+
+/* Styles pour les checkboxes et leurs labels.
+   Django génère un <label> pour la checkbox. Adaptez ces styles. */
+.checkbox-field {
+    display: flex; /* Ou 'block' selon votre agencement souhaité */
+    align-items: center;
+    margin: 10px 0;
+    width: 100%;
+    color: #444; /* Couleur du texte du label */
+    font-size: 16px;
+}
+
+.checkbox-field label {
+    margin-right: 10px; /* Espace entre le label et la checkbox */
+    cursor: pointer;
+}
+
+.checkbox-field input[type="checkbox"] {
+    width: auto; /* Pour que la checkbox garde sa taille standard */
+    height: auto;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* Styles pour le champ de téléchargement de fichier (photo de profil) */
+.file-input-field {
+    /* Reprenez les styles de .input-field ou adaptez-les */
+    width: 100%;
+    height: auto; /* Hauteur auto pour s'adapter au contenu du fichier input */
+    padding: 10px; /* Ajoutez un padding si nécessaire */
+    background: #f0f0f0;
+    margin: 10px 0;
+    border: 2px solid #014886;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Pour que le label et l'input puissent passer à la ligne */
+}
+
+.file-input-field input[type="file"] {
+    flex: 5;
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 16px; /* Taille de police légèrement plus petite pour les chemins de fichier */
+    color: #444;
+    padding-left: 10px; /* Petit espacement par rapport à l'icône */
+}
+
+.file-input-field label {
+    flex: 1;
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+    cursor: pointer; /* Indiquer que le label est cliquable pour l'input file */
+}
+
 
 .btn {
     width: 150px;
@@ -117,6 +185,7 @@ form.sign-up-form {
     margin: 10px 0;
     text-transform: uppercase;
     cursor: pointer;
+    transition: background 0.3s ease; /* Ajout d'une transition pour le hover */
 }
 
 .btn:hover {
@@ -143,6 +212,7 @@ form.sign-up-form {
     border: 1px solid #444;
     border-radius: 50px;
     margin: 0 5px;
+    transition: all 0.3s ease; /* Ajout d'une transition pour le hover */
 }
 
 a {
@@ -154,6 +224,7 @@ a {
     border-color: #014886;
 }
 
+/* Styles pour les panneaux d'information */
 .panels-container {
     position: absolute;
     top: 0;
@@ -178,7 +249,7 @@ a {
 }
 
 .left-panel {
-    pointer-events: none;
+    pointer-events: none; /* Désactive les événements de souris sur le panel de gauche initialement */
 }
 
 .content {
@@ -203,6 +274,7 @@ a {
     transition-delay: 0.4s;
 }
 
+/* Transformations initiales pour l'animation */
 .left-panel .image,
 .left-panel .content {
     transform: translateX(-200%);
@@ -213,9 +285,7 @@ a {
     transform: translateX(0);
 }
 
-
-/*Animation*/
-
+/* Animations lorsque le conteneur a la classe 'sign-up-mode' (ajoutée par JS) */
 .container.sign-up-mode::before {
     transform: translateX(0);
 }
@@ -246,35 +316,125 @@ a {
     pointer-events: all;
 }
 
+/* Styles pour les messages de Django (erreurs, succès, etc.) */
+.messages {
+    list-style: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.messages li {
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.messages .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.messages .info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.messages .warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Styles pour la liste d'erreurs générée par Django pour les champs */
+.errorlist {
+    list-style: none;
+    color: #dc3545; /* Rouge pour les erreurs */
+    font-size: 0.9em;
+    margin-top: -5px; /* Ajuster la marge supérieure */
+    margin-bottom: 10px;
+    padding-left: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.errorlist li {
+    margin-left: 20px; /* Indenter un peu les messages d'erreur */
+}
+
+
+/* MEDIA QUERIES */
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
         width: 95vw;
-        height: auto;
+        height: auto; /* Permet au conteneur de s'adapter à la hauteur du contenu */
+        min-height: 100vh; /* S'assure qu'il occupe au moins toute la hauteur de l'écran */
     }
     .signin-signup {
         flex-direction: column;
         justify-content: center;
-        gap: 20px;
+        gap: 20px; /* Ajout d'un écart entre les formulaires en mode colonne */
         padding: 20px 0;
+        position: relative; /* Position relative pour le bon flux */
+        height: auto; /* Adapter la hauteur */
     }
     form {
         width: 90%;
+        padding: 0 5px; /* Ajuster le padding */
     }
     .panels-container {
         flex-direction: column;
+        position: relative; /* Adapter la position */
+        height: auto;
+        padding: 20px 0;
+        justify-content: center;
     }
     .panel {
         width: 90%;
+        padding: 0 5px;
+        margin-bottom: 20px; /* Espacement entre les panneaux */
     }
     .image {
         width: 70%;
+        margin-top: 20px; /* Espace au-dessus de l'image */
     }
+
+    /* Réinitialisation des transformations pour les petits écrans */
+    .left-panel .image,
+    .left-panel .content,
+    .right-panel .image,
+    .right-panel .content {
+        transform: translateX(0) !important; /* Force la position normale */
+    }
+
+    /* Cache le pseudo-élément pour l'animation qui pourrait poser problème */
+    .container::before {
+        display: none;
+    }
+    .container.sign-up-mode .right-panel,
+    .container.sign-up-mode .left-panel {
+        pointer-events: all; /* Active les événements sur les deux panneaux */
+    }
+    /* Les formulaires seront gérés par le JS qui ajoute/retire la classe 'sign-up-mode' */
+    /* Assurez-vous que votre JS gère correctement l'affichage des formulaires en mode mobile */
 }
 
 @media (max-width: 480px) {
     .input-field {
-        flex-direction: row;
+        flex-direction: row; /* Garde la même direction que sur les écrans plus grands */
         height: auto;
         padding: 10px;
     }
@@ -287,5 +447,17 @@ a {
     .btn {
         width: 100%;
         height: 45px;
+    }
+    /* Ajustements pour les tailles d'icônes si nécessaire */
+    .input-field i {
+        font-size: 16px;
+    }
+    .social-text {
+        font-size: 14px;
+    }
+    .social-icon {
+        height: 40px;
+        width: 40px;
+        font-size: 16px;
     }
 }
