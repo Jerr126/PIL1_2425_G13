@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'Integration.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,14 +70,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Integration.wsgi.application'
 
+AUTH_USER_MODEL = 'Convoiturage.Utilisateur' 
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis', # <<< TRÈS IMPORTANT
-        'NAME': 'convoit_ifri',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'ice_g13',
         'USER': 'postgres',
         'PASSWORD': 'MySQL&2005&Yohanan',
         'HOST': 'localhost', # Ou l'adresse IP de votre serveur PostgreSQL
@@ -121,14 +122,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+
 STATIC_URL = 'static/'
+
+# Dossier où Django collectera tous les fichiers statiques pour la production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Dossiers où Django cherchera les fichiers statiques pendant le développement
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Convoiturage/static/Convoiturage'),
+]
+
+# 4. Configuration des fichiers médias (photos de profil uploadées)
+MEDIA_URL = '/media/'
+# Dossier où les fichiers uploadés seront stockés
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import os
+
 
 # ... vos autres configurations settings ...
 
@@ -144,3 +158,13 @@ else:  # Si vous êtes sur Linux ou macOS
     GDAL_LIBRARY_PATH = '/usr/local/lib/libgdal.so'
     GEOS_LIBRARY_PATH = '/usr/local/lib/libgeos_c.so' # REMPLACEZ CE CHEMIN
     # Ou '/usr/lib/libgdal.so' ou '/opt/homebrew/lib/libgdal.dylib' sur macOS, etc.
+
+
+# Paramètres d'e-mail pour le développement
+# Les e-mails seront affichés dans la console/terminal
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# L'adresse e-mail de l'expéditeur pour les e-mails de réinitialisation
+DEFAULT_FROM_EMAIL = 'noreply@votre-domaine.com'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL # Utilisé pour les messages d'erreur du serveur

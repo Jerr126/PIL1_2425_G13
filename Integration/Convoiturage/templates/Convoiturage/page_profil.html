@@ -1,84 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil Utilisateur</title>
-    <link rel="stylesheet" href="Convoiturage/css/style_profil.css" />
+    {% load static %} {# Charge le tag 'static' pour les fichiers statiques #}
+    <link rel="stylesheet" href="{% static 'css/style_profil.css' %}" />
+    {# Incluez Font Awesome si vous voulez les icônes (ex: fas fa-car) #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="profile-container">
-                <div class="profile-picture" onclick="document.getElementById('fileInput').click()">
-                    <img id="avatar" src="asset/ressources/img/profil.jpg" alt="Photo de profil">
+                <div class="profile-picture" onclick="document.getElementById('id_profile_picture').click()">
+                    {# Affiche la photo de profil actuelle. 'user.profile_picture.url' si ImageField a une image #}
+                    {# Ou 'asset/ressources/img/profil.jpg' si c'est l'URL par défaut #}
+                    <img id="avatar" src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/profil.jpg' %}{% endif %}" alt="Photo de profil">
                 </div>
-                <input type="file" id="fileInput" accept="image/*" onchange="changeProfilePicture()" hidden>
-                <button onclick="document.getElementById('fileInput').click()">Changer la photo</button>
+                {# L'input file doit être géré par Django Form, nous cachons le champ et utilisons un bouton custom #}
+                <input type="file" id="id_profile_picture" name="profile_picture" accept="image/*" onchange="changeProfilePicture(event)" hidden>
+                <button onclick="document.getElementById('id_profile_picture').click()">Changer la photo</button>
             </div>
             <nav class="nav">
-                <button href="#" class="active">Paramètres</button>
-                <button href="ice.html" class="active">Déconnexion</button>
+                <a href="{% url 'profile' %}" class="active">Paramètres</a> {# Lien vers cette page de profil #}
+                <a href="{% url 'logout' %}" class="active">Déconnexion</a> {# Utilise l'URL de déconnexion de Django #}
             </nav>
         </aside>
 
-        <!-- Main Profile Form -->
         <main class="profile-form">
             <h2>Information personnelle</h2>
-            <div class="toggle-container">
-                <span class="label">Passager</span>
-                <label class="switch"><input type="checkbox" id="roleToggle"><span class="slider"></span></label>
-                <span class="label">Conducteur</span>
-            </div>
-            <form>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {# Le formulaire Django doit être inclus ici #}
+            <form method="POST" enctype="multipart/form-data"> {# enctype est crucial pour l'upload de fichiers #}
+                {% csrf_token %} {# Très important pour la sécurité Django #}
+
+                <div class="toggle-container">
+                    <span class="label">Passager</span>
+                    {# Utilisez directement le champ is_conducteur du formulaire Django #}
+                    <label class="switch">
+                        {{ form.is_conducteur }} {# Ceci rendra la checkbox #}
+                        <span class="slider"></span>
+                    </label>
+                    <span class="label">Conducteur</span>
+                </div>
+
                 <div class="form-grid">
                     <div>
-                        <label>Nom</label>
-                        <input type="text" placeholder="Nom" />
+                        <label for="{{ form.last_name.id_for_label }}">Nom</label>
+                        {{ form.last_name }} {# Affiche le champ nom (last_name) #}
                         <span class="emoji-edit" title="Modifier">🖍</span>
+                        {% if form.last_name.errors %}<ul class="errorlist">{% for error in form.last_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                     </div>
                     <div>
-                        <label>Prenoms</label>
-                        <input type="text" placeholder="Prenoms" />
+                        <label for="{{ form.first_name.id_for_label }}">Prénoms</label>
+                        {{ form.first_name }} {# Affiche le champ prénoms (first_name) #}
                         <span class="emoji-edit" title="Modifier">🖍</span>
+                        {% if form.first_name.errors %}<ul class="errorlist">{% for error in form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                    </div>
+                    <div class="full-width">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }} {# Affiche le champ email #}
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                        {% if form.email.errors %}<ul class="errorlist">{% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.num_tel.id_for_label }}">Numéro de téléphone</label>
+                        {{ form.num_tel }} {# Affiche le champ numéro de téléphone #}
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                        {% if form.num_tel.errors %}<ul class="errorlist">{% for error in form.num_tel.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                     </div>
 
-                    <div class="full-width">
-                        <label>Email</label>
-                        <input type="email" placeholder="Email" />
-                        <span class="emoji-edit" title="Modifier">🖍</span>
-                    </div>
-                    <div>
-                        <label>Numéro de téléphone</label>
-                        <input type="text" placeholder="Numéro de téléphone" />
-                        <span class="emoji-edit" title="Modifier">🖍</span>
-                    </div>
-                    <div class="vehicle-info">
-                        <label>Type d'engin</label>
-                        <input type="text" placeholder="Type d'engin" />
-                        <span class="emoji-edit" title="Modifier">🖍</span>
-                    </div>
-                    <div class="vehicle-info">
-                        <label>Matricule</label>
-                        <input type="text" placeholder="Matricule" />
-                        <span class="emoji-edit" title="Modifier">🖍</span>
-                    </div>
-                    <div>
-                        <label>Position</label>
-                        <input type="text" placeholder="Position" />
-                        <span class="emoji-edit" title="Modifier">🖍</span>
+                    {# Champs spécifiques au conducteur, affichés/masqués par JS #}
+                    <div class="vehicle-info-section"> {# Nouveau conteneur pour ces infos #}
+                        <div>
+                            <label for="{{ form.type_vehicule.id_for_label }}">Type d'engin</label>
+                            {{ form.type_vehicule }} {# Affiche le champ type de véhicule #}
+                            <span class="emoji-edit" title="Modifier">🖍</span>
+                            {% if form.type_vehicule.errors %}<ul class="errorlist">{% for error in form.type_vehicule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                        <div>
+                            <label for="{{ form.matricule.id_for_label }}">Matricule</label>
+                            {{ form.matricule }} {# Affiche le champ matricule #}
+                            <span class="emoji-edit" title="Modifier">🖍</span>
+                            {% if form.matricule.errors %}<ul class="errorlist">{% for error in form.matricule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
                     </div>
                 </div>
                 <div class="buttons">
-                    <button type="submit" class="save">Sauvegarder</button>
+                    <button type="submit" class="save" >Editer</button>
                 </div>
             </form>
         </main>
     </div>
-    <script src="asset/js/profil.js"></script>
+    <script src="{% static 'js/profil.js' %}"></script>
 </body>
-
 </html>
