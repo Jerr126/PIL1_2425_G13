@@ -67,6 +67,12 @@
                         <span class="emoji-edit" title="Modifier">🖍</span>
                         {% if form.first_name.errors %}<ul class="errorlist">{% for error in form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                     </div>
+                     <div>
+                        <label for="{{ form.username.id_for_label }}">Prénoms</label>
+                        {{ form.username }} {# Affiche le champ prénoms (first_name) #}
+                        <span class="emoji-edit" title="Modifier">🖍</span>
+                        {% if form.username.errors %}<ul class="errorlist">{% for error in form.userame.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                    </div>
                     <div class="full-width">
                         <label for="{{ form.email.id_for_label }}">Email</label>
                         {{ form.email }} {# Affiche le champ email #}
@@ -97,7 +103,7 @@
                     </div>
                 </div>
                 <div class="buttons">
-                    <button type="submit" class="save" >Editer</button>
+                    <button type="submit" class="save" >Sauvegarder</button>
                 </div>
             </form>
         </main>

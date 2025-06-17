@@ -17,48 +17,45 @@ class UserRegistrationForm(UserCreationForm):
         widget=forms.EmailInput(attrs={'placeholder': 'Email'})
     )
     # Les autres champs seront rendus par Meta
-    password_confirm = forms.CharField(
-        label="Mot de passe",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Confirmer le mot de passe', 'class': 'input-field-input'})
-    )
+
 
     class Meta(UserCreationForm.Meta): # Hérite de Meta de UserCreationForm
         model = Utilisateur
         fields = UserCreationForm.Meta.fields + (
             'first_name',
             'last_name',
+            'username', # Nom d'utilisateur
             'num_tel',
             'email',
-            'password', # Mot de passe
-            'password_confirm', # Confirmation du mot de passe
             'is_conducteur',
             'type_vehicule',
             'matricule',
-            'profile_picture', # Pour l'enregistrement, vous pouvez laisser l'utilisateur choisir une photo
         )
         # Personnalisez les widgets et labels comme vous le souhaitez
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'Prénom', 'class': 'input-field-input'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Nom', 'class': 'input-field-input'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Nom d\'utilisateur', 'class': 'input-field-input'}),
             'num_tel': forms.TextInput(attrs={'placeholder': 'Numéro de téléphone (10 chiffres)', 'pattern': '\\d{10}', 'title': 'Le numéro doit contenir uniquement 10 chiffres.',
                                                'class': 'input-field-input'},),
             'type_vehicule': forms.TextInput(attrs={'placeholder': 'Type de véhicule', 'class': 'input-field-input'}),
             'matricule': forms.TextInput(attrs={'placeholder': 'Matricule', 'class': 'input-field-input'}),
-            'password': forms.PasswordInput(attrs={'placeholder': 'Mot de passe', 'class': 'input-field-input'}),
+            'password1': forms.PasswordInput(attrs={'placeholder': 'Mot de passe', 'class': 'input-field-input'}),
+            'password2': forms.PasswordInput(attrs={'placeholder': 'Confirmer le mot de passe', 'class': 'input-field-input'}),
             # Note: pour le mot de passe, UserCreationForm gère déjà le PasswordInput.
             # Pour profile_picture, Django gérera un FileInput par défaut.
         }
         labels = {
             'first_name': 'Prénom',
             'last_name': 'Nom',
+            'username': 'Nom d\'utilisateur',
             'num_tel': 'Numéro de téléphone',
             'email': 'Email',
-            'password': 'Mot de passe',
-            'password_confirm': 'Confirmer le mot de passe',
+            'password1': 'Mot de passe',
+            'password2': 'Confirmer le mot de passe',
             'is_conducteur': 'S\'inscrire en tant que conducteur ?',
             'type_vehicule': 'Type de véhicule (si conducteur)',
             'matricule': 'Matricule (si conducteur)',
-            'profile_picture': 'Photo profil',
         }
 
     # Vous pouvez ajouter une logique de nettoyage supplémentaire ici si nécessaire
@@ -91,8 +88,9 @@ class ConnexionForm(AuthenticationForm):
 
 class UtilisateurProfileForm(forms.ModelForm):
     # Les labels sont définis ici pour correspondre à votre HTML
-    username = forms.CharField(label="Prénoms", max_length=150, required=False) # Prénoms
+    first_name = forms.CharField(label="Prénoms", max_length=150, required=False) # Prénoms
     last_name = forms.CharField(label="Nom", max_length=150, required=False) # Nom
+    username = forms.CharField(label="Nom d'utilisateur", max_length=150, required=True) # Nom d'utilisateur
     email = forms.EmailField(label="Email", required=True)
     num_tel = forms.CharField(label="Numéro de téléphone", max_length=10, required=True)
 
