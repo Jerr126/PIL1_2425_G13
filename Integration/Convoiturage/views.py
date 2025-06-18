@@ -209,6 +209,10 @@ def historique(request):
 @login_required
 def reserver_trajet(request, trajet_id):
     tra = get_object_or_404(Trajet, id=trajet_id)
+    
+    if  request.user.is_conducteur:
+        messages.warning(request, "Vous devez être enregistré comme Utilisateur pour réserver un trajet.")
+        return redirect('profile') # Rediriger vers la page de profil pour changer de statut
 
     if Reservation.objects.filter(Utilisateur=request.user, tra=tra).exists():
         messages.info(request, "Vous avez déjà réservé ce trajet.")
