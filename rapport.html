@@ -1,32 +1,53 @@
-PROJET INTEGRATEUR - 2024-2025 / IFRI_comotorage
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport de projet</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1 em;
+    }
+  </style>
+</head>
+<body>
+    <h1>PROJET INTEGRATEUR - 2024-2025 / IFRI_comotorage</h1>
 
-Université : Université d’Abomey-Calavi 
+  <h2>Nom de l'application: IFRI Covoiturage Etudiants (ICE)</h2>
+  
 
-Etablissement : Institut de Formation et de Recherche en Informatique (IFRI) 
+  <p>Groupe n°13: <br>
+    - NATTA Itouta Yohanann Eldaa (SEIOT1)<br>
+    - BANDA BONI Charbel Seka(IA1)<br>
+    - MEDJA Jerry Smith Nistelrooy(SI1)<br>
+    - DADJI Naomie Kafuiata Océane Charbella(IM1)<br>
+    -BOSSA Ghislain Régis Josaphat(GL1)<br>
+    -LOGBO Houégnon Fidèle Marie-Ange Michel(IA1)
+  </p>
+  <h4>CREATION DU PROJET</h4>
 
-Spécialité : Licence IA/IM/GL/SEIoT/SI
-
-Groupe n°13:
-  - NATTA Itouta Yohanann Eldaa (SEIOT1)
-  - BANDA BONI Charbel Seka(IA1)
-  - MEDJA Jerry Smith Nistelrooy(SI1)
-  - DADJI Naomie Kafuiata Océane Charbella(IM1)
-  -BOSSA Ghislain Régis Josaphat(GL1)
-  -LOGBO Houégnon Fidèle Marie-Ange Michel(IA1)
-
-CREATION DU PROJET
-
-La création de ce projet, a suivie 3 grandes phases:
-  - le création des pages du front-end;
-  - la mise en place de l'architecture et des instuctions du backend;
-  - test des commades et résolutions des bugs;
-
-EN CE QUI CONCERNE LE FRONT-END: 
- Trois personne s'en on chargé (Naomie,Jerry et Régis )
- Après la conception de la maquette par Naomie designeée comme superviseuse, elle donnait les directives à ses camarades. Elle s'est oocupé de coder l'acceuil et le home intégrale avec les pop ups et les restrictions , elle a également codé certaine partie de code qu'elle a envoyé aux autres, pour les autres pages elle a confié la page d'annonce,profil,d'inscription,connexion à Jerry (selon elle il était vif et rapide dans le travail elle a apprécié). De même la page de paramètre et menu ont été attribué à Régis(il était souffrant pour un trmps donc on a pas vite recu ces parties mais il a fait un bon boulot)
-EN CE QUI CONCERNE LE BACKEND:
- Après la mise en place de l'architecture Django et la création de ses constituants de base (par Charbel), nous sommes passer à la mise en place d'une base de données MySql conformement au cahier de charge. Mais suite à la création de nos tableaux (par Charbel, Fidel et Yohanan), nous avons opter pour une base de donnée PostgreSql, car dans django mysql ne gère pas les données de types point, indispensables dans nos tables pour la manipulation des données géospatial.
-
-
-A PROPOS DES TESTS ET DES BUGS:
-les tests ont surtout concernés la coformité des types de données, leur enregistrement, leur manipulation et en fin la manipulation des variables.
+  <p>La création de ce projet, a suivie 3 grandes <br>
+    - le création des pages du front-end;<br>
+    - la mise en place de l'architecture et des instuctions du backend;<br>
+    - test des commades et résolutions des bugs;
+  </p>
+  <p> <h5>EN CE QUI CONCERNE LE FRONT-END:</h5> <br>
+  Trois personne s'en on chargé (Naomie,Jerry et Régis )<br>
+  Après la conception de la maquette par Naomie designeée comme superviseuse, elle donnait les directives à ses camarades. <br> Elle s'est oocupé de coder l'acceuil et le home intégrale avec les pop ups et les restrictions , elle a également codé certaine partie de code qu'elle a envoyé aux autres, pour les autres pages elle a confié la page d'annonce,profil,d'inscription,connexion à Jerry (selon elle il était vif et rapide dans le travail elle a apprécié). <br> De même la page de paramètre et menu ont été attribué à Régis(il était souffrant pour un trmps donc on a pas vite recu ces parties mais il a fait un bon boulot)
+  </p>
+  <p> <h5>EN CE QUI CONCERNE LE BACKEND:</h5><br>
+    <p>Au départ on avait décider de tous faire le front-end et ensuite de revenir sur le back-end. Après quelques jours on ne constatait pas l'évolution des travaux donc on a divisé le groupe en deux laissant Naomie et son groupe gérer tout ce qu'on avait déjà fait. Lorsque ceux du front-end nous livraient les pages on devait d'abord les adapter à notre structure avant de réellement utiliser leurs codes.</p>
+    <p>Après la mise en place de l'architecture Django et la création de ses constituants de base (par Charbel), nous sommes passer à la mise en place d'une base de données MySql conformement au cahier de charge. Mais suite à la création de nos tableaux (par Charbel, Fidel et Yohanan), nous avons opter pour une base de donnée PostgreSql, car dans django mysql ne gère pas les données de types point, indispensables dans nos tables pour la manipulation des données géospatial. On a créé un utilisateur qui peut etre conducteur ou non (à son bon vouloir). </p>
+    <p> Charbel a mis en place un alogorithme de matching qui recherche le vehicule approprié pour le l'utilisateur(passager) lorsque celui ci recherche un trajet. Mais pour qu'il fonctionne coorectement Yohanan s'est chargé de nous trouver une clé API GoogleMaps. Nous avous utilisé GéocodingAPI pour pouvoir récupérer les noms de ville entrés et les transformés en coordonnées géographique et les insérer dans la base de donnée. Ensuite nous avons ajouté Maps JavaScrip API et Directions API pour respectivement la locaisation des points entrés sur la carte et l'affichage du trajet entre la ville de départ et celle d'arrivée. </p>
+    <p> Naomie a bossé sur la messagerie et le système de notifications qu'on a adapté à la structure de Django mais on n'a pas pu la relié à notre apps de convoiturage. On a donc utiliser des scripts js et la fonction message de Django pour afficher des notifications. On a importé des fonctioncs de django pour l'authetification et l'enrégistrement. </p>
+  </p>
+  <p>
+  <h5>A PROPOS DES TESTS ET DES BUGS:</h5><br>
+  les tests ont surtout concernés la coformité des types de données, leur enregistrement, leur manipulation et en fin la manipulation des variables. Ces tests ont fait au fur et à mesure par Charbel et Yohanan et cela nous permettais d'évoluer en sachant que le travail déjà fait est nickel.
+  </p>
+  <p> <center> PROBLEMES RENCONTRES </center> <br> 
+  L'un des membres du groupe n'a pas vraiment participé aux travaux. Il y a eu des difficultés de communication avec un des membres(Fidèle) car l'administration a confisqué son téléphone depuis des mois, ce qui a beaucoup enrayé la productivité du groupe. Charbel et Yohanan ont du faire avec pour la mise en place du back end. <br>
+  Un autre membre (Régis) était souffrant pour un trmps donc on a pas vite recu ces parties.
+</p>
+</body>
