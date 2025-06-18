@@ -1,0 +1,498 @@
+/* Importation des polices */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* Réinitialisation et styles de base */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #74C1ED 0%, #A3D7F5 50%, #E6F7FF 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    color: #1A3C5A;
+}
+
+
+/* Conteneur principal */
+
+.container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0 32px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInPage 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+/* Animations globales */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* En-tête */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 32px 0;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 500;
+    color: white;
+}
+
+.logo-img {
+    height: 150px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    opacity: 1;
+    transform: translateY(-30px);
+    animation: slideInLogo 1s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+.logo-img:active {
+    transform: scale(0.95);
+}
+
+
+/* Navigation */
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    border-radius: 5px;
+    top: 130px;
+    z-index: 9;
+    width: 100%;
+}
+
+nav li {
+    margin-left: 100px;
+    list-style: none;
+}
+
+nav a {
+    color: #1A3C5A;
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+    justify-content: space-around;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #007BFF;
+    transition: width 0.3s ease;
+    justify-content: space-around;
+}
+
+nav a:hover {
+    color: #007BFF;
+    justify-content: space-around;
+}
+
+nav a:hover::after {
+    width: 100%;
+    justify-content: space-around;
+}
+
+
+/* Boutons */
+
+.btn,
+.btn1 {
+    padding: 14px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background: linear-gradient(90deg, #007BFF, #00A3FF);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.btn1 {
+    margin-right: 3%;
+}
+
+.btn:hover,
+.btn1:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.btn:active,
+.btn1:active {
+    transform: scale(0.98);
+}
+
+
+/* Contenu principal */
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 40px;
+    flex: 1;
+    width: 100vw;
+    gap: 60px;
+}
+
+.main-text {
+    max-width: 50%;
+    animation: slideInLeft 1s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+.main-text h1 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1A3C5A;
+    margin-bottom: 30px;
+}
+
+.main-text h1 span.yellow {
+    color: #007BFF;
+}
+
+.main-buttons {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.image-card {
+    position: relative;
+    width: 100%;
+    max-width: 965px;
+    height: auto;
+    border-radius: 5%;
+    overflow: hidden;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-right: 10%;
+    transition: transform 0.8s ease, box-shadow 0.8s ease;
+    width: 100%;
+}
+
+.image-card:hover {
+    transform: scale(1.03) rotate(1deg);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* Pied de page */
+
+footer {
+    background-color: #001836;
+    color: #fff;
+    padding: 48px 32px;
+    margin-top: auto;
+    margin: 0;
+    z-index: 10;
+    width: 100%;
+    animation: fadeInUp 1s ease-out;
+    animation-delay: 0.4s;
+    animation-fill-mode: both;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 50px;
+    max-width: 100%;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-column h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-column a {
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #00A3FF;
+}
+
+.social-icons {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: white;
+    font-size: 22px;
+    transition: background 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: #00A3FF;
+    color: white;
+}
+
+
+/* Éléments décoratifs */
+
+.decor {
+    position: absolute;
+    opacity: 0.25;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.decor img {
+    width: 100px;
+    height: auto;
+}
+
+.decor-cloud1 {
+    top: 10%;
+    left: -10%;
+    animation: floatCloud 50s linear infinite;
+}
+
+.decor-cloud2 {
+    top: 25%;
+    right: -10%;
+    animation: floatCloudRev 60s linear infinite;
+}
+
+.decor-sun {
+    top: 5%;
+    left: 5%;
+    animation: pulseSun 10s ease-in-out infinite;
+}
+
+.decor-car {
+    bottom: 10%;
+    left: -15%;
+    animation: driveCar 45s linear infinite;
+}
+
+.decor-moto {
+    bottom: 15%;
+    left: -20%;
+    animation: driveMoto 40s linear infinite;
+}
+
+.decor-plane {
+    top: 15%;
+    right: -15%;
+    animation: flyPlane 35s linear infinite;
+}
+
+@keyframes floatCloud {
+    to {
+        transform: translateX(120vw);
+    }
+}
+
+@keyframes floatCloudRev {
+    to {
+        transform: translateX(-120vw);
+    }
+}
+
+@keyframes pulseSun {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.4;
+    }
+}
+
+@keyframes driveCar {
+    to {
+        transform: translateX(130vw);
+    }
+}
+
+@keyframes driveMoto {
+    to {
+        transform: translateX(140vw);
+    }
+}
+
+@keyframes flyPlane {
+    to {
+        transform: translateX(-130vw) rotate(-5deg);
+    }
+}
+
+
+/* Media Queries */
+
+@media (max-width: 1200px) {
+    main {
+        flex-direction: column;
+        padding: 60px 20px;
+    }
+    .main-text,
+    .image-card {
+        max-width: 100%;
+        text-align: center;
+    }
+    .main-text h1 {
+        font-size: 42px;
+    }
+    .main-buttons {
+        justify-content: center;
+    }
+    .image-card {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px 20px;
+    }
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    nav a {
+        font-size: 18px;
+    }
+    .main-text h1 {
+        font-size: 32px;
+    }
+    .main-buttons {
+        flex-direction: column;
+    }
+    .image-card {
+        max-width: 100%;
+    }
+    .decor img {
+        width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-img {
+        height: 100px;
+    }
+    .main-text h1 {
+        font-size: 28px;
+    }
+    .btn,
+    .btn1 {
+        width: 100%;
+        max-width: 220px;
+    }
+    .footer-column a {
+        font-size: 14px;
+    }
+    .social-icons a {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    .decor img {
+        width: 60px;
+    }
+}
