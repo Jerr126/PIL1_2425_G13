@@ -1,67 +1,236 @@
 {% extends 'Convoiturage/base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="background-gradient"></div>
-
-    <!-- En tête -->
-    <header>
-      <div class="logo">Logo</div>
-      <nav>
+ <div class="navigation">
         <ul>
-          <li><a href="#">Accueil</a></li>
-          <li><a href="#">Passager</a></li>
-          <li><a href="#">Conducteur</a></li>
-          <li><a href="#">Trajet</a></li>
+            <li class="list active">
+                <a href="a.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="text">Acceuil</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="page_profil.html">
+                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <span class="text">Profil</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></span>
+                    <span class="text">Message</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="notifications-outline"></ion-icon></span>
+                    <span class="text">Notification</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#">
+                    <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
+                    <span class="text">Maps</span>
+                </a>
+            </li>
+            <div class="indicator"></div>
         </ul>
-      </nav>
-      <button type="submit" class="btn1">Connexion</button>
-    </header>
+    </div>
 
-    <!-- corp -->
-    <main>
-      <div class="main-text">
-        <h1>
-          <span class="yellow">U</span>
-          ne communauté en
-          <span class="yellow"> mouvement</span> vous attend<span class="yellow"> !</span>
-        </h1>
+    <!-- Contenu principal -->
+    <div class="container">
+
+        <!-- Barre de recherche -->
+        <div class="search-bar">
+            <input type="text" placeholder="Où souhaitez-vous aller aujourd'hui ?" aria-label="Rechercher un trajet">
+        </div>
+
+        <!-- Carte interactive -->
+        <div class="map-section">
+            <a href="carte.html" class="map-container" aria-label="Explorer la carte des trajets">
+                <img src="https://i.imgur.com/UWbJD4W.png" alt="Carte interactive" class="carte" loading="lazy">
+                <div class="map-overlay">
+                    <h3>Explorez les trajets disponibles</h3>
+                    <p>Cliquez pour voir toutes les options près de chez vous</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Boutons principaux -->
         <div class="main-buttons">
-          <button type="button" class="btn">Rechercher</button>
-          <button type="button" class="btn">Offrir un trajet</button>
+            <button class="main-btn" onclick="handleSearch()">
+        <i class="fas fa-search"></i> Trouver un trajet
+      </button>
+            <button class="main-btn" onclick="handlePublish()">
+        <i class="fas fa-car"></i> Proposer un trajet
+      </button>
         </div>
-      </div>
-      
-    </main>
 
-    <!-- pieds -->
-    <footer>
-      <div class="footer-grid">
-        <div class="footer-column">
-          <a href="#">FAQ</a>
-          <a href="#">A propos</a>
-          <a href="#">Cookies</a>
+        <!-- Popup de confirmation -->
+        <div class="popup-overlay" id="popup">
+            <div class="popup">
+                <h3><i class="fas fa-info-circle"></i> Changement de mode</h3>
+                <p>Pour proposer un trajet, vous devez être en mode conducteur. Souhaitez-vous changer de mode maintenant ?</p>
+                <div class="popup-actions">
+                    <a href="page_profil.html" class="popup-btn popup-btn-primary" onclick="redirectToProfile()">
+                        <i class="fas fa-user-edit"></i> Changer de mode
+                    </a>
+                    <button class="popup-btn popup-btn-secondary" onclick="closePopup()">
+            <i class="fas fa-times"></i> Plus tard
+          </button>
+                </div>
+            </div>
         </div>
-        <div class="footer-column">
-          <a href="#">Contacts</a>
-          <a href="#">Conditions d'utilisations</a>
-          <a href="#">Confidentialité</a>
+
+        <!-- Popup de recherche -->
+        <div class="popup-overlay" id="searchPopup">
+            <div class="popup">
+                <h3><i class="fas fa-route"></i> Paramètres de recherche</h3>
+
+                <div class="form-group">
+                    <label for="departure">Lieu de départ</label>
+                    <input type="text" id="departure" class="form-control" placeholder="Votre point de départ">
+                </div>
+
+                <div class="form-group">
+                    <label for="arrival">Destination</label>
+                    <input type="text" id="arrival" class="form-control" placeholder="Votre destination">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Heure</label>
+                        <input type="time" id="time" class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="passengers">Nombre de places</label>
+                    <select id="passengers" class="form-control">
+            <option value="1">1 place</option>
+            <option value="2">2 places</option>
+            <option value="3">3 places</option>
+            <option value="4">4 places</option>
+          </select>
+                </div>
+
+                <div class="popup-actions">
+                    <button class="popup-btn popup-btn-primary" onclick="performSearch()">
+            <i class="fas fa-search"></i> Lancer la recherche
+          </button>
+                    <button class="popup-btn popup-btn-secondary" onclick="closeSearchPopup()">
+            <i class="fas fa-times"></i> Annuler
+          </button>
+                </div>
+            </div>
         </div>
-        <div class="footer-column">
-          <a href="#">Centre d'aide</a>
-          <a href="#">En savoir plus</a>
-          <a href="#">Compte</a>
+
+        <!-- Popup de publication de trajet (conducteur) -->
+        <div class="popup-overlay" id="publishPopup">
+            <div class="popup">
+                <h3><i class="fas fa-car"></i> Proposer un trajet</h3>
+
+                <div class="form-group">
+                    <label for="publishDeparture">Lieu de départ</label>
+                    <input type="text" id="publishDeparture" class="form-control" placeholder="D'où partez-vous ?">
+                </div>
+
+                <div class="form-group">
+                    <label for="publishArrival">Destination</label>
+                    <input type="text" id="publishArrival" class="form-control" placeholder="Où allez-vous ?">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="publishDate">Date</label>
+                        <input type="date" id="publishDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publishTime">Heure</label>
+                        <input type="time" id="publishTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="publishSeats">Places disponibles</label>
+                    <input type="number" id="publishSeats" class="form-control" min="1" max="8" value="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="publishPrice">Prix par passager (€)</label>
+                    <input type="number" id="publishPrice" class="form-control" min="1" max="100" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="publishCar">Modèle de voiture</label>
+                    <input type="text" id="publishCar" class="form-control" placeholder="Votre véhicule">
+                </div>
+
+                <div class="popup-actions">
+                    <button class="popup-btn popup-btn-primary" onclick="publishRide()"><i class="fas fa-check"></i> Publier le trajet</button>
+                    <button class="popup-btn popup-btn-secondary" onclick="closePublishPopup()"><i class="fas fa-times"></i> Annuler</button>
+                </div>
+            </div>
         </div>
-        <div class="footer-column">
-          <a href="">icebenin229@gmail.com</a>
-          <div class="social-icons">
-                <a href=""><i class="fab fa-facebook-f"></i></a>
-                <a href=""><i class="fab fa-twitter"></i></a>
-                <a href=""><i class="fab fa-instagram"></i></a>
-                <a href=""> <i class="fab fa-pinterest-p"></i></a>
-                <a href=""> <i class="fab fa-youtube"></i></a>
-           </div>
+
+        <!-- Popup de confirmation de publication -->
+        <div class="popup-overlay" id="publishSuccessPopup">
+            <div class="popup">
+                <h3><i class="fas fa-check-circle"></i> Trajet publié !</h3>
+                <p>Votre trajet a été publié avec succès et est maintenant visible dans les annonces.</p>
+                <div class="popup-actions">
+                    <button class="popup-btn popup-btn-primary" onclick="closePublishSuccessPopup()"><i class="fas fa-thumbs-up"></i> Parfait</button>
+                </div>
+            </div>
         </div>
+
+        <!-- Fonctionnalités -->
+        <div class="features">
+            <a href="anonce.html" class="feature-card" aria-label="Voir les annonces">
+                <div class="feature-icon">
+                    <i class="fas fa-list-ul"></i>
+                </div>
+                <h3>Annonces récentes</h3>
+                <p>Découvrez les trajets publiés récemment par notre communauté</p>
+            </a>
+
+            <a href="reservation.html" class="feature-card" aria-label="Mes réservations">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Vos réservations</h3>
+                <p>Retrouvez tous vos trajets à venir et passés en un seul endroit</p>
+            </a>
+
+            <a href="page_profil.html" class="feature-card" aria-label="Mon profil">
+                <div class="feature-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3>Votre profil</h3>
+                <p>Personnalisez votre profil et gérez vos préférences</p>
+            </a>
+        </div>
+
+    </div>
+    <script>
+        const list = document.querySelectorAll('.list');
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove('active'));
+            this.classList.add('active');
+        }
+        list.forEach((item) => item.addEventListener('click', activeLink));
+    </script>
+    <script src="Convoiturage/js/a.js"></script>
+</body>
+
 
 
 {% endblock %}

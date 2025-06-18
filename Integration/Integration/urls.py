@@ -22,9 +22,10 @@ from django.conf.urls.static import static # Importez static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('conducteurs/', include('Convoiturage.urls')),
     path('', include('Convoiturage.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+
     # Inclut les URLs d'authentification de Django (login, logout, password_change, etc.)
         # URLs pour la réinitialisation de mot de passe
     path('password_reset/',

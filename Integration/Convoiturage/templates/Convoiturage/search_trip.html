@@ -1,0 +1,93 @@
+{# myapp/templates/myapp/search_results.html #}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rechercher un Trajet - Covoiturage{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Convoiturage/css/style_search.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="search-container">
+        <h2>Trouver un Trajet</h2>
+
+        {# Pas besoin des messages ici car ils sont déjà dans base.html #}
+
+        <form method="GET" class="search-form">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div>
+                    <label for="{{ form.origine.id_for_label }}">Départ</label>
+                    {{ form.origine }}
+                    {% if form.origine.errors %}<ul class="errorlist">{% for error in form.origine.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.destination.id_for_label }}">Arrivée</label>
+                    {{ form.destination }}
+                    {% if form.destination.errors %}<ul class="errorlist">{% for error in form.destination.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.date_depart.id_for_label }}">Date</label>
+                    {{ form.date_depart }}
+                    {% if form.date_depart.errors %}<ul class="errorlist">{% for error in form.date_depart.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div>
+                    <label for="{{ form.nombre_places_min.id_for_label }}">Places</label>
+                    {{ form.nombre_places_min }}
+                    {% if form.nombre_places_min.errors %}<ul class="errorlist">{% for error in form.nombre_places_min.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <h3>Résultats de la Recherche</h3>
+        {% if results %}
+            <div class="trip-results-grid">
+                {% for trajet in results %}
+                    <div class="trip-card">
+                        <div class="trip-header">
+                            <span class="trip-route">{{ trajet.origine }} <i class="fas fa-arrow-right"></i> {{ trajet.destination }}</span>
+                            <span class="trip-price">{{ trajet.prix_par_place }} XOF/place</span> {# MODIFIER: XOF si c'est la bonne monnaie #}
+                        </div>
+                        <div class="trip-details">
+                            <p><i class="far fa-calendar-alt"></i> Date: {{ trajet.date_depart|date:"d M Y" }}</p>
+                            <p><i class="far fa-clock"></i> Heure: {{ trajet.heure_depart|time:"H:i" }}</p>
+                            <p><i class="fas fa-users"></i> Places disponibles: {{ trajet.nombre_places }}</p>
+                        </div>
+                        <div class="conducteur-info">
+                            <div class="profile-picture-small">
+                                <img src="{% if trajet.conducteur.profile_picture %}{{ trajet.conducteur.profile_picture.url }}{% else %}{% static 'ressources/img/profil.jpg' %}{% endif %}" alt="Photo de profil">
+                            </div>
+                            <p class="conducteur-name">Conducteur: {{ trajet.conducteur.get_full_name|default:trajet.conducteur.username }}</p>
+                            {# Bouton "Contacter" à implémenter plus tard avec une vraie fonctionnalité #}
+                            <button class="btn btn-primary contact-driver-btn" data-driver-id="{{ trajet.conducteur.id }}">Contacter</button>
+                        </div>
+                        {% if trajet.description %}
+                            <p class="trip-description">Description: {{ trajet.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Veuillez entrer vos critères de recherche ci-dessus ou affiner votre recherche.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.querySelectorAll('.contact-driver-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const driverId = this.dataset.driverId;
+                alert('Fonctionnalité de contact du conducteur ' + driverId + ' à implémenter. Redirection future vers une page de chat ou de réservation.');
+                // Exemple de redirection future :
+                // window.location.href = `/messages/new/?to=${driverId}`;
+            });
+        });
+    </script>
+{% endblock %}

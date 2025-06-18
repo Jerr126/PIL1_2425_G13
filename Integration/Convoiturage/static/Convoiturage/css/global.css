@@ -1,6 +1,165 @@
 /* assets/css/global.css */
 
-/* ... (votre code CSS global existant) ... */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,700&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #2b2a2a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    color: #013069;
+    margin-bottom: 0.8em;
+    line-height: 1.2;
+}
+
+h1 { font-size: 2.5em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.75em; }
+h4 { font-size: 1.5em; }
+h5 { font-size: 1.25em; }
+h6 { font-size: 1em; }
+
+p {
+    margin-bottom: 1em;
+    color: #555;
+}
+
+a {
+    color: #015A9B;
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+a:hover {
+    color: #004085;
+    text-decoration: underline;
+}
+
+button, .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background-color: #013069;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #002246;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="date"], /* AJOUTÉ: Pour les champs date */
+input[type="time"], /* AJOUTÉ: Pour les champs heure */
+input[type="number"], /* AJOUTÉ: Pour les champs numériques (places) */
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    color: #333;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #015A9B;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(1, 48, 105, 0.25);
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 20px auto; /* Centrer les messages */
+    max-width: 900px; /* Limiter la largeur des messages */
+}
+.messages li {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.messages .success { background-color: #28a745; border: 1px solid #218838; }
+.messages .error { background-color: #dc3545; border: 1px solid #c82333; }
+.messages .warning { background-color: #ffc107; color: #343a40; border: 1px solid #e0a800; }
+.messages .info { background-color: #17a2b8; border: 1px solid #117a8b; }
+
+.errorlist {
+    color: #dc3545;
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+.errorlist li { padding: 2px 0; }
+
+footer {
+    background-color: #013069;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+}
 
 /* Styles de navigation (main-nav) */
 .main-nav {
@@ -14,6 +173,7 @@
     display: flex;
     justify-content: center;
     gap: 30px;
+    flex-wrap: wrap; /* Pour la responsivité des liens */
 }
 
 .main-nav a {
@@ -25,16 +185,39 @@
 }
 
 .main-nav a:hover {
-    background-color: #004085; /* Couleur de survol */
+    background-color: #004085;
     text-decoration: none;
 }
 
-/* Style pour le lien de navigation ACTIF */
 .main-nav a.active {
-    background-color: #005A9B; /* Une couleur distincte pour l'état actif, par exemple un bleu plus clair */
-    color: #e0f2f7; /* Texte légèrement plus clair pour l'actif */
-    pointer-events: none; /* Rendre le lien inactif si c'est la page actuelle */
-    cursor: default; /* Curseur par défaut */
+    background-color: #005A9B; /* Couleur distincte pour l'état actif */
+    color: #e0f2f7;
+    pointer-events: none;
+    cursor: default;
 }
 
-/* ... (le reste de votre code CSS global) ... */
+main {
+    flex: 1;
+    padding: 20px;
+    /* Vous pouvez ajouter une couleur de fond par défaut ou la laisser transparente pour voir le body background */
+    /* background-color: #f8f8f8; */
+}
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.mt-20 { margin-top: 20px; }
+.mb-20 { margin-bottom: 20px; }
+
+/* Media Query pour la navigation sur petits écrans */
+@media (max-width: 768px) {
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .main-nav a {
+        width: 90%; /* Pour que les boutons prennent plus de place */
+        text-align: center;
+    }
+}
