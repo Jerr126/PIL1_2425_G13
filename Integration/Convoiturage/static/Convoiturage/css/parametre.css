@@ -1,148 +1,144 @@
 /* Convoiturage/static/Convoiturage/css/parametre.css */
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #ccc;
-    /* Les bordures et border-radius sur le body directement peuvent être étranges si le body ne couvre pas tout */
-    /* border-top: 1px solid #eee; */
-    /* border-bottom: 1px solid #eee; */
-    /* border-radius: 20px; */
-    display: flex; /* Ajouté pour centrer le container */
-    justify-content: center; /* Ajouté pour centrer le container */
-    align-items: center; /* Ajouté pour centrer le container */
-    min-height: 100vh; /* Ajouté pour centrer verticalement */
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #ccc;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-radius: 20px;
 }
 
 .container {
-    max-width: 480px;
-    /* margin: auto; <- déjà géré par flexbox sur body */
-    background-color: #eee;
-    min-height: 100vh;
-    padding-bottom: 20px;
-    border-radius: 20px; /* Appliquer le border-radius ici plutôt que sur le body */
-    overflow: hidden; /* Pour que le border-radius s'applique bien aux contenus internes */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajout d'une légère ombre */
+  max-width: 480px;
+  margin: auto;
+  background-color: #eee;
+  min-height: 100vh;
+  padding-bottom: 20px;
 }
 
 .header {
-    font-family: 'Montserrat', sans-serif; /* Assurez-vous que Montserrat est importé si vous l'utilisez */
-    font-style: normal;
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-    padding: 16px;
-    border-bottom: 1px solid #ddd;
-    background-color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    border-radius: 30px; /* Peut rendre les coins supérieurs ronds si le container a aussi un border-radius */
-    margin-bottom: 10px; /* Espace après le header */
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 16px;
+  color: #fff;
+  border-bottom: 1px solid #ddd;
+  background-color: #014886;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 30px;
 }
 
 .section {
-    margin: 10px 20px; /* Ajout de marges horizontales pour l'espacement */
-    font-size: 20px;
-    border-bottom: none; /* Supprimé car la nouvelle définition du container section le gère */
-    border-top: none; /* Supprimé car la nouvelle définition du container section le gère */
-    background-color: #fff;
-    border-radius: 16px; /* Déplacé ici depuis le .container section */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Déplacé ici depuis le .container section */
-    list-style: none; /* Déplacé ici depuis .container ul li */
-    text-align: left;
-    font-weight: 600;
-    padding: 5px; /* Peut être ajusté si trop petit */
-    height: auto; /* Ajustez ou supprimez si la hauteur fixe pose problème */
-    align-items: center;
-    border: 1px solid #888; /* Peut être supprimé si le box-shadow est suffisant */
-    margin-bottom: 20px; /* Déplacé ici depuis .container section */
+  margin: 10px 0;
+  font-size: 20px;
+  border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
+  background-color: #fff;
+  border-radius: 30px;
+  list-style: none;
+  text-align: left;
+  font-weight: 600;
+  padding: 5px;
+  height: 50px;
+  align-items: center;
+  border: 1px solid #003366;
 }
 
 .item {
-    display: flex;
-    padding: 16px;
-    border-top: 1px solid #f0f0f0; /* Cette bordure pourrait être redondante avec .section */
-    cursor: pointer;
-    list-style: none; /* Redondant si .section ou .container ul li le gère */
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    transform: translateY(-25px); /* Cela va décaler chaque 'item' vers le haut */
+  display: flex;
+  padding: 16px;
+  border-top: 1px solid #f0f0f0;
+  cursor: pointer;
+  list-style: none;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  transform: translateY(-25px);
 }
 
 .item:first-child {
-    border-top: none;
-}
-
-/* Ces styles sont plus spécifiques et devraient être après les styles génériques */
-
-.container ul li a {
-    position: relative; /* Pour positionner les éléments internes */
-    display: flex; /* Permet un bon alignement des icones et texte */
-    align-items: center;
-    text-decoration: none;
-    color: #222; /* Couleur du texte du lien */
-    /* transform: translateY(-30px); <- Appliquer ceci sur .item si nécessaire, pas sur le lien directement */
-    padding: 0 12px; /* Ajout de padding pour les clics */
-    width: 100%; /* Le lien prend toute la largeur */
-    box-sizing: border-box; /* Inclure padding dans la largeur */
+  border-top: none;
 }
 
 .icon {
-    font-size: 20px;
-    width: 30px; /* Largeur fixe pour l'icône */
-    color: #222;
-    margin-right: 15px; /* Espacement après l'icône */
-    display: flex; /* Assure que ion-icon est bien centré */
-    align-items: center;
-    justify-content: center;
-    /* margin-left: -25px; <- Ceci est agressif et peut sortir l'icône du conteneur */
-    /* transform: translateY(5px); <- Peut être supprimé si align-items: center gère */
+  font-size: 20px;
+  width: 30px;
+  justify-content: space-between;
 }
 
 .text {
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    /* position: absolute; <- Pas idéal si vous utilisez flexbox pour le a */
-    letter-spacing: 0.05em;
-    flex-grow: 1; /* Permet au texte de prendre l'espace restant */
-    white-space: nowrap; /* Empêche le texte de passer à la ligne */
-    overflow: hidden; /* Masque le texte qui dépasse */
-    text-overflow: ellipsis; /* Ajoute des points de suspension */
-}
-
-.arrow-icon {
-    font-size: 1.2em; /* Taille ajustée pour la flèche */
-    color: #888;
-    margin-left: auto; /* Pousse la flèche à droite */
-    /* padding-left: 350px; <- Ceci est un espacement fixe, mieux vaut utiliser margin-left: auto */
-    /* transform: translateY(-5px); <- Appliquer sur le conteneur du lien ou gérer avec align-items */
+  font-size: 20px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .footer {
-    font-size: 14px;
-    color: #666;
-    text-align: center;
-    padding: 16px;
-    border-top: 1px solid #eee;
-    background-color: #eee;
-    /* transform: translateY(330px); <- Ceci est une transformation fixe, peu flexible */
-    margin-top: 40px; /* Utiliser une marge pour l'espacement si le footer est à la fin */
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid #eee;
+  background-color: #eee;
+  transform: translateY(330px);
 }
-
-/* Styles spécifiques aux éléments li et a */
-.container ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.container ul li a 
+{
+  font-size: 18px;
+  color: #ccc;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 12px;
 }
-
-.container ul li {
-    list-style: none;
-    text-decoration: none;
+.icon
+{
+  color: #222;
+  margin-left: -25px;
+  margin-right: 15px;
 }
-
-/* Retrait des styles redondants ou conflictuels */
-/* .container section { ... } a été fusionné dans .section pour éviter la duplication */
+.container ul li a
+{
+  position: relative;
+  color: #222;
+  align-items: center;
+  text-decoration: none;
+  transform: translateY(-30px);
+}
+.container section
+{
+  border-bottom: none;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px;
+  margin-bottom: 20px;
+  list-style: none;
+}
+.container ul li
+{
+  list-style: none;
+  text-decoration: none;
+}
+.container ul li a .text
+{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  position: absolute;
+  letter-spacing: 0.05em;
+  margin-right: 20px;
+  transform: translateY(5px);
+}
+.container ul li a .icon
+{
+  color: #222;
+}
+.arrow-icon
+{
+  color: #888;
+  padding-left: 350px;
+  transform: translateY(-5px);
+}
