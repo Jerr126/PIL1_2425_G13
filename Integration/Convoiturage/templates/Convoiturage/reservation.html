@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mes Réservations</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat');
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f1f5f9;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #014886;
+            margin-bottom: 30px;
+        }
+        
+        .reservation {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .reservation p {
+            margin: 6px 0;
+        }
+        
+        .reservation strong {
+            color: #014886;
+        }
+        
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Mes trajets réservés</h1>
+    <div id="listeReservations"></div>
+
+    <script>
+        function afficherReservations() {
+            const reservations = JSON.parse(localStorage.getItem("reservationsPassager") || "[]");
+            const conteneur = document.getElementById("listeReservations");
+
+            if (reservations.length === 0) {
+                conteneur.innerHTML = "<p style='text-align:center;'>Aucune réservation pour le moment </p>";
+                return;
+            }
+
+            reservations.forEach(r => {
+                const div = document.createElement("div");
+                div.className = "reservation";
+                div.innerHTML = `
+          <p><strong>Conducteur :</strong> ${r.nom}</p>
+          <p><strong>Départ :</strong> ${r.depart}</p>
+          <p><strong>Destination :</strong> ${r.destination}</p>
+        `;
+                conteneur.appendChild(div);
+            });
+        }
+
+        afficherReservations();
+    </script>
+</body>
+
+</html>
