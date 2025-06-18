@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
- :root {
+
+:root {
     --white: #ffffff;
     --dark-blue: #0d47a1;
     --medium-blue: #1976d2;
@@ -8,9 +9,11 @@
     --gray: #f5f5f5;
     --dark-gray: #333;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --clr: var(--dark-blue); /* Définition de la variable --clr, par exemple avec dark-blue */
+    /* Vous pouvez ajuster la valeur de --clr ici selon vos préférences */
 }
 
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -56,60 +59,6 @@ body {
     box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2);
 }
 
-
-/* Carte interactive */
-
-.map-section {
-    text-align: center;
-    margin: 40px 0;
-}
-
-.map-container {
-    display: inline-block;
-    position: relative;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-    width: 95%;
-    max-width: 1000px;
-}
-
-.carte {
-    width: 100%;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.map-container:hover {
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-.map-container:hover .carte {
-    transform: scale(1.02);
-}
-
-.map-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-    color: white;
-    padding: 20px;
-    text-align: left;
-}
-
-.map-overlay h3 {
-    margin: 0 0 5px;
-    font-size: 1.3em;
-}
-
-.map-overlay p {
-    margin: 0;
-    opacity: 0.9;
-    font-size: 0.95em;
-}
 
 
 /* Boutons principaux */
@@ -229,148 +178,6 @@ body {
     color: #666;
     font-size: 0.95em;
 }
-
-
-/* Popups */
-
-.popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.popup {
-    background: white;
-    padding: 35px;
-    border-radius: 18px;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-out;
-    border-top: 5px solid var(--golden-yellow);
-    margin: 20px;
-}
-
-.popup h3 {
-    color: var(--dark-blue);
-    margin: 0 0 25px;
-    font-size: 1.4em;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.popup h3 i {
-    color: var(--golden-yellow);
-}
-
-.popup p {
-    margin: 0 0 25px;
-    color: #555;
-    line-height: 1.6;
-    font-size: 1.05em;
-}
-
-.popup-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.popup-btn {
-    padding: 13px 25px;
-    border: none;
-    border-radius: 50px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex: 1;
-    max-width: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-weight: 500;
-}
-
-.popup-btn-primary {
-    background: linear-gradient(to right, var(--medium-blue), var(--golden-yellow));
-    color: white;
-}
-
-.popup-btn-secondary {
-    background: var(--gray);
-    color: var(--dark-gray);
-}
-
-.popup-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-
-/* Formulaire de recherche */
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--dark-blue);
-    font-weight: 500;
-    font-size: 0.95em;
-}
-
-.form-control {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 1em;
-    transition: all 0.3s;
-    background-color: var(--white);
-}
-
-.form-control:focus {
-    border-color: var(--medium-blue);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
-}
-
-.form-row {
-    display: flex;
-    gap: 15px;
-}
-
-.form-row .form-group {
-    flex: 1;
-}
-
-.duration-input {
-    display: flex;
-    align-items: center;
-}
-
-.duration-input .form-control {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: none;
-}
-
-
 
 /* Animations */
 

@@ -1,4 +1,3 @@
-{# myapp/templates/base.html #}
 {% load static %} {# Ne pas oublier ceci pour le tag 'static' #}
 
 <!DOCTYPE html>
@@ -6,61 +5,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mon Application de Covoiturage{% endblock %}</title>
+    <title>{% block title %}ICE{% endblock %}</title>
 
     {# CSS Global à toutes les pages #}
     <link rel="stylesheet" href="{% static 'Convoiturage/css/global.css' %}">
     {# Font Awesome pour les icônes - Important si vous utilisez des icônes #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-    {# Bloc pour les CSS spécifiques à chaque page (rempli par les templates enfants) #}
+  <style>
+    #map {
+      width: 100%;
+      height: 400px;
+    }
+  </style>
     {% block extra_css %}{% endblock %}
 
 </head>
 <body>
 
-    {# En-tête / Barre de navigation #}
+    {# Barre de navigation #}
     <nav class="main-nav">
         <ul>
             <li>
-                {# Lien Accueil : actif si le nom d'URL est 'home' ou 'home_alt' (pour / ou /home/) #}
                 <a href="{% url 'home' %}"
                    class="{% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'home_alt' %}active{% endif %}">
                    Accueil
                 </a>
             </li>
             <li>
-                {# Lien Mon Profil : actif si le nom d'URL est 'profile' #}
+ 
                 <a href="{% url 'profile' %}"
                    class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                    Mon Profil
                 </a>
             </li>
-            {# NOUVEAU: Liens pour Rechercher et Proposer un trajet #}
+
             <li>
-                {# Lien Rechercher Trajet : actif si le nom d'URL est 'search_trip' #}
                 <a href="{% url 'search_trip' %}"
                    class="{% if request.resolver_match.url_name == 'search_trip' %}active{% endif %}">
                    Rechercher un Trajet
                 </a>
             </li>
-            {% if user.is_authenticated and user.is_conducteur %}
+            
             <li>
-                {# Lien Proposer Trajet : actif si le nom d'URL est 'propose_trip' #}
                 <a href="{% url 'propose_trip' %}"
                    class="{% if request.resolver_match.url_name == 'propose_trip' %}active{% endif %}">
                    Proposer un Trajet
                 </a>
             </li>
-            {% endif %}
+            
 
-            {# Liens d'authentification #}
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Déconnexion</a></li>
             {% else %}
                 <li><a href="{% url 'login' %}">Connexion</a></li>
-                <li><a href="{% url 'register' %}">Inscription</a></li> {# MODIFIER: 'register' si vous avez une URL pour l'inscription #}
+                <li><a href="{% url 'register' %}">Inscription</a></li>
             {% endif %}
+
+            <li>
+                <a href="{% url 'settings' %}">
+                   Settings
+                </a>
+            </li>
+
         </ul>
     </nav>
 
@@ -80,7 +86,7 @@
 
     {# Pied de page commun #}
     <footer>
-        <p>&copy; 2025 Mon Application de Covoiturage. Tous droits réservés.</p>
+        <p>&copy; 2025 ICE. Tous droits réservés.</p>
     </footer>
 
     {# Bloc pour les scripts JS spécifiques à chaque page (chargé en dernier pour la performance) #}

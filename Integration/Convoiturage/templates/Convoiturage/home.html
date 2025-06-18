@@ -1,27 +1,23 @@
-{# myapp/templates/myapp/home.html #}
-{% extends 'base.html' %} {# Ce template étend 'base.html' pour hériter de la structure de base (DOCTYPE, head, body, header, footer, messages). #}
-{% load static %} {# Charge le tag 'static' de Django, essentiel pour référencer correctement les fichiers CSS, JS et images. #}
+{% extends 'Convoiturage/base.html' %} 
+{% load static %} 
 
-{# Définit le titre de la page, qui sera inséré dans le bloc 'title' de base.html. #}
+
 {% block title %}Accueil - Covoiturage{% endblock %}
 
-{# Définit les feuilles de style CSS spécifiques à cette page. Elles seront ajoutées dans le bloc 'extra_css' de base.html. #}
+
 {% block extra_css %}
-    {# Votre feuille de style principale pour l'accueil. Assurez-vous que ce fichier est dans 'assets/css/'. #}
+
     <link rel="stylesheet" href="{% static 'css/a.css' %}">
-    {# Optionnel: Si vous aviez une version spécifique de Font Awesome ici, vous pouvez la laisser, sinon elle est déjà dans base.html. #}
+ 
     {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> #}
 {% endblock %}
 
-{# Début du contenu principal de la page, qui sera inséré dans le bloc 'content' de base.html. #}
+
 {% block content %}
 
-    {# Section de navigation avec Ionicons. #}
-    {# IMPORTANT: Si cette navigation est destinée à être présente sur TOUTES les pages, elle devrait être déplacée dans 'base.html'. #}
-    {# Si elle est spécifique à la page d'accueil, la laisser ici est correct. #}
     <div class="navigation">
         <ul>
-            {# 'active' est ajouté si le nom de l'URL actuelle est 'home'. #}
+           
             <li class="list {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
                 {# Lien vers la page d'accueil Django. #}
                 <a href="{% url 'home' %}">
@@ -29,7 +25,7 @@
                     <span class="text">Accueil</span>
                 </a>
             </li>
-            {# 'active' est ajouté si le nom de l'URL actuelle est 'profile'. #}
+           
             <li class="list {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                 {# Lien vers la page de profil Django. #}
                 <a href="{% url 'profile' %}">
@@ -38,24 +34,18 @@
                 </a>
             </li>
             <li class="list">
-                {# Lien placeholder pour la future page de messagerie. #}
-                {# MODIFIER: Remplacez '#' par {% url 'votre_url_messages' %} quand elle sera créée. #}
                 <a href="#">
                     <span class="icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></span>
                     <span class="text">Message</span>
                 </a>
             </li>
             <li class="list">
-                {# Lien placeholder pour la future page de notifications. #}
-                {# MODIFIER: Remplacez '#' par {% url 'votre_url_notifications' %} quand elle sera créée. #}
                 <a href="#">
                     <span class="icon"><ion-icon name="notifications-outline"></ion-icon></span>
                     <span class="text">Notification</span>
                 </a>
             </li>
             <li class="list">
-                {# Lien placeholder pour la future page de carte. #}
-                {# MODIFIER: Remplacez '#' par {% url 'votre_url_maps' %} quand elle sera créée. #}
                 <a href="#">
                     <span class="icon"><ion-icon name="location-outline"></ion-icon></span>
                     <span class="text">Maps</span>
@@ -67,79 +57,22 @@
 
     <div class="container">
 
+
+        <!-- Barre de recherche -->
         <div class="search-bar">
-            <input type="text" placeholder="Où souhaitez-vous aller aujourd'hui ?" aria-label="Rechercher un trajet" disabled>
-            <p style="color: #a7d9f5; font-size: 0.9em; margin-top: 5px;">Utilisez le bouton "Trouver un trajet" ci-dessous pour lancer une recherche avancée.</p>
+            <input type="text" id="adresse"  placeholder="Entrez une adresse" >
+              <button onclick="geocoderAdresse()">Rechercher</button>
         </div>
 
-        <div class="map-section">
-            {# Lien vers une page de carte dédiée. #}
-            {# MODIFIER: Assurez-vous que 'map_page' est bien le nom de l'URL pour votre page de carte dans urls.py. #}
-            {# Assurez-vous que l'image 'carte.png' est dans 'assets/img/'. #}
-            <a href="{% url 'map_page' %}" class="map-container" aria-label="Explorer la carte des trajets">
-                <img src="{% static 'assets/img/carte.png' %}" alt="Carte interactive" class="carte" loading="lazy">
-                <div class="map-overlay">
-                    <h3>Explorez les trajets disponibles</h3>
-                    <p>Cliquez pour voir toutes les options près de chez vous</p>
-                </div>
-            </a>
+        <!-- Carte interactive -->
+
+        <div id="map">
+                
         </div>
 
-        <div class="main-buttons">
-            {# Bouton pour trouver un trajet, redirige directement vers la page de recherche Django. #}
-            <button class="main-btn" onclick="href=search_trip">
-                <i class="fas fa-search"></i> Trouver un trajet
-            </button>
-
-            {# Bouton pour proposer un trajet. Appelle une fonction JS pour vérifier le statut du conducteur. #}
-            <button class="main-btn" onclick="checkConducteurStatus()">
-                <i class="fas fa-car"></i> Proposer un trajet
-            </button>
-        </div>
-
-        {# Cette popup s'affiche via JavaScript si l'utilisateur n'est pas conducteur et tente de proposer un trajet. #}
-        <div class="popup-overlay" id="popup">
-            <div class="popup">
-                <h3><i class="fas fa-info-circle"></i> Changement de mode</h3>
-                <p>Pour proposer un trajet, vous devez être en mode conducteur. Souhaitez-vous changer de mode maintenant ?</p>
-                <div class="popup-actions">
-                    {# Lien vers la page de profil Django pour que l'utilisateur puisse changer son statut. #}
-                    <a href="{% url 'profile' %}" class="popup-btn popup-btn-primary">
-                        <i class="fas fa-user-edit"></i> Changer de mode
-                    </a>
-                    <button class="popup-btn popup-btn-secondary" onclick="closePopup()">
-                        <i class="fas fa-times"></i> Plus tard
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        {# Ancien code des popups de formulaire (recherche et publication) - MIS EN COMMENTAIRE. #}
-        {# Nous utilisons maintenant des pages Django dédiées pour ces formulaires. #}
-        {% comment %}
-        <div class="popup-overlay" id="searchPopup">
-            </div>
-
-        <div class="popup-overlay" id="publishPopup">
-            </div>
-        {% endcomment %}
-
-        {# Pour une application Django standard, les messages flash sont généralement préférés après soumission de formulaire. #}
-        <div class="popup-overlay" id="publishSuccessPopup" style="display: none;">
-            <div class="popup">
-                <h3><i class="fas fa-check-circle"></i> Trajet publié !</h3>
-                <p>Votre trajet a été publié avec succès et est maintenant visible dans les annonces.</p>
-                <div class="popup-actions">
-                    <button class="popup-btn popup-btn-primary" onclick="closePublishSuccessPopup()">
-                        <i class="fas fa-thumbs-up"></i> Parfait
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <div class="features">
-            {# Lien vers la page des annonces (qui est notre page de recherche de trajet). #}
-            <a href="{% url 'search_trip' %}" class="feature-card" aria-label="Voir les annonces">
+            <a href="{% url 'annonce' %}" class="feature-card" aria-label="Voir les annonces">
                 <div class="feature-icon">
                     <i class="fas fa-list-ul"></i>
                 </div>
@@ -147,17 +80,14 @@
                 <p>Découvrez les trajets publiés récemment par notre communauté</p>
             </a>
 
-            {# Lien placeholder pour la future page de réservations. #}
-            {# MODIFIER: Remplacez '#' par {% url 'votre_url_reservations' %} quand elle sera créée. #}
-            <a href="#" class="feature-card" aria-label="Mes réservations">
+            <a href="{% url 'historique' %}" class="feature-card" aria-label="Mes réservations">
                 <div class="feature-icon">
                     <i class="fas fa-calendar-check"></i>
                 </div>
-                <h3>Vos réservations</h3>
+                <h3>Votre historique</h3>
                 <p>Retrouvez tous vos trajets à venir et passés en un seul endroit</p>
             </a>
 
-            {# Lien vers la page de profil. #}
             <a href="{% url 'profile' %}" class="feature-card" aria-label="Mon profil">
                 <div class="feature-icon">
                     <i class="fas fa-user-circle"></i>
@@ -167,72 +97,82 @@
             </a>
         </div>
 
-    </div> {# Fin du container principal. #}
+    </div>
 
-{% endblock %} {# Fin du bloc 'content'. #}
+{% endblock %} 
 
-{# Début du bloc 'extra_js' pour les scripts JavaScript spécifiques à cette page. #}
 {% block extra_js %}
-    {# Script Ionicons. Gardez-le ici ou déplacez-le dans base.html si d'autres pages l'utilisent. #}
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    {# Votre script JavaScript personnalisé pour la page d'accueil. #}
-    {# Assurez-vous que ce fichier 'a.js' est bien dans 'assets/js/'. #}
-    <script src="{% static 'Convaturage/js/a.js' %}"></script>
+    <script src="{% static 'Convoiturage/js/a.js' %}"></script>
+
 
     <script>
-        // Fonctionnalité JavaScript pour la barre de navigation Ionicons (activeLink)
-        // Elle ajoute/retire la classe 'active' pour styliser le lien sélectionné.
-        const list = document.querySelectorAll('.list');
+      let map;       // Carte Google Maps
+      let marker;    // Marqueur affiché
+      let infoWindow; // Infobulle affichée sur le marqueur
 
-        function activeLink() {
-            list.forEach((item) => item.classList.remove('active'));
-            this.classList.add('active');
-        }
-        list.forEach((item) => item.addEventListener('click', activeLink));
+      // Fonction d'initialisation de la carte (appelée automatiquement)
+      function initMap() {
+    
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 6.417122, lng: 2.3401530  }, // Coordonnées de UAC
+          zoom: 14,
+        });
+      }
 
-        // --- Logique JavaScript pour la vérification du statut conducteur ---
+      // Fonction pour géocoder une adresse
+      function geocoderAdresse() {
+        const adresse = document.getElementById("adresse").value;
 
-        // Affiche la popup demandant à l'utilisateur de changer de mode.
-        function openPopup() {
-            document.getElementById('popup').style.display = 'flex';
-        }
+        // Création de l'objet Geocoder
+        const geocoder = new google.maps.Geocoder();
 
-        // Ferme la popup de changement de mode.
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
+        // Appel à l'API Geocoding
+        geocoder.geocode({ address: adresse }, function(results, status) {
+          if (status === "OK") {
+            const location = results[0].geometry.location;
 
-        // Fonction appelée lorsque l'utilisateur clique sur "Proposer un trajet".
-        // Elle vérifie si l'utilisateur est déjà un conducteur.
-        function checkConducteurStatus() {
-            // Récupère le statut 'is_conducteur' de l'objet 'user' (qui vient du contexte Django)
-            // et le convertit en booléen JavaScript.
-            const isConducteur = "{{ user.is_conducteur|lower }}" === "true";
+            // Centrer la carte sur l'adresse trouvée
+            map.setCenter(location);
 
-            if (isConducteur) {
-                // Si l'utilisateur est déjà conducteur, redirige directement vers la page de proposition de trajet.
-                window.location.href = "{% url 'propose_trip' %}";
-            } else {
-                // Si l'utilisateur n'est PAS conducteur, affiche la popup de "Changement de mode".
-                openPopup();
-            }
-        }
+            // Supprimer le marqueur précédent s'il existe
+            if (marker) marker.setMap(null);
 
-        // Fonction pour fermer la popup de succès de publication.
-        // Cette popup est moins critique car les messages flash Django peuvent aussi gérer le feedback.
-        function closePublishSuccessPopup() {
-            document.getElementById('publishSuccessPopup').style.display = 'none';
-        }
+            // Ajouter un nouveau marqueur
+            marker = new google.maps.Marker({
+              map: map,
+              position: location,
+              title: adresse,
+            });
 
+            // Créer une infobulle avec l’adresse
+            infoWindow = new google.maps.InfoWindow({
+              content: `<strong>${adresse}</strong><br>Lat: ${location.lat().toFixed(5)}<br>Lng: ${location.lng().toFixed(5)}`,
+            });
+
+            // Afficher l’infobulle au clic sur le marqueur
+            marker.addListener("click", () => {
+              infoWindow.open(map, marker);
+            });
+
+            // Ouvrir l’infobulle automatiquement
+            infoWindow.open(map, marker);
+
+            // Afficher les coordonnées dans la console
+            console.log("Coordonnées :", location.lat(), location.lng());
+          } else {
+            alert("Adresse introuvable : " + status);
+          }
+        });
+      }
     </script>
-      {# NOTES IMPORTANTES SUR LE JAVASCRIPT #}
-        {# Si votre fichier 'assets/js/a.js' contient des fonctions comme : #}
-        {# `handleSearch()`, `handlePublish()`, `performSearch()`, `publishRide()`, `closeSearchPopup()`, `closePublishPopup()` #}
-        {# Elles ne seront plus appelées par les boutons de la même manière car nous redirigeons vers des pages Django. #}
-        {# Vous devrez probablement : #}
-        {# 1. Les supprimer de 'a.js' si elles ne sont plus utilisées. #}
-        {# 2. Les adapter si elles ont d'autres rôles non liés à l'ouverture des popups de formulaire. #}
 
-{% endblock %} {# Fin du bloc 'extra_js'. #}
+    <!-- Import de l’API Google Maps avec ta clé API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkIuqnZARwmMbomZLOdg4tnBQgid3LhFI&callback=initMap" async defer></script>
+
+
+
+{% endblock %} 

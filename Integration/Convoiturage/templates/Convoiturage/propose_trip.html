@@ -1,18 +1,15 @@
-{# myapp/templates/myapp/propose_trip.html #}
-{% extends 'base.html' %}
+{% extends 'Convoiturage/base.html' %}
 {% load static %}
 
-{% block title %}Proposer un Trajet - Covoiturage{% endblock %}
+{% block title %}Proposer un Trajet{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'convoiturage/css/style_search.css' %}"> {# Réutilise le CSS de recherche #}
+    <link rel="stylesheet" href="{% static 'convoiturage/css/style_search.css' %}">
 {% endblock %}
 
 {% block content %}
     <div class="propose-trip-container">
         <h2>Proposer un Nouveau Trajet</h2>
-
-        {# Pas besoin des messages ici car ils sont déjà dans base.html #}
 
         <form method="POST" class="propose-trip-form">
             {% csrf_token %}
@@ -29,12 +26,16 @@
             <div class="form-grid">
                 <div>
                     <label for="{{ form.origine.id_for_label }}">Lieu de départ</label>
+                
                     {{ form.origine }}
+                    <input type="hidden" name="origine_coords" id="origine_coords">
                     {% if form.origine.errors %}<ul class="errorlist">{% for error in form.origine.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                 </div>
                 <div>
                     <label for="{{ form.destination.id_for_label }}">Lieu d'arrivée</label>
+                  
                     {{ form.destination }}
+                    <input type="hidden" id="destination_coords" name="destination_coords">
                     {% if form.destination.errors %}<ul class="errorlist">{% for error in form.destination.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                 </div>
                 <div>
@@ -57,16 +58,111 @@
                     {{ form.prix_par_place }}
                     {% if form.prix_par_place.errors %}<ul class="errorlist">{% for error in form.prix_par_place.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                 </div>
-                <div class="full-width">
-                    <label for="{{ form.description.id_for_label }}">Description (optionnel)</label>
-                    {{ form.description }}
-                    {% if form.description.errors %}<ul class="errorlist">{% for error in form.description.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
-                </div>
+
+            </div>                
+            <div>  
+              <input id="start" placeholder="Point de départ" class="vu">
+              <input id="end" placeholder="Point d'arrivée" class="vu">
+              <button id="calculate">Voir l'itinéraire</button>
+             <div id="map"></div>
             </div>
             <div class="buttons">
-                <button type="submit" class="btn btn-primary">Proposer le Trajet</button>
+                <button type="submit" id="soumettre" class="btn btn-primary">Soumettre</button>
                 <a href="{% url 'home' %}" class="btn btn-secondary">Annuler</a>
             </div>
         </form>
     </div>
+
+    
+  <script>
+    let map, directionsService, directionsRenderer;
+
+    function initMap() {
+      // Initialisation de la carte centrée sur uac
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: { lat: 6.417122, lng: 2.3401530  },
+      });
+
+      directionsService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({ map });
+    }
+
+    document.getElementById("calculate").addEventListener("click", () => {
+      calculateRoute();
+    });
+
+    function calculateRoute() {
+      const start = document.getElementById("start").value.trim();
+      const end = document.getElementById("end").value.trim();
+
+      if (start === '' ||
+          end === '') {
+        alert("Veuillez entrer une origine et une destination.");
+        return;
+      }
+
+      directionsService.route(
+        {
+          origin: start,
+          destination: end,
+          travelMode: google.maps.TravelMode.DRIVING,
+        },
+        (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+          } else {
+            alert("Échec de l'itinéraire : " + status);
+          }
+        }
+      );
+    }
+
+    // Chargement de la carte lorsque la page est prête
+    window.onload = initMap;
+  </script>
+
+<script>
+  document.getElementById('soumettre').addEventListener('click', function (e) {
+    e.preventDefault(); // Empêche l'envoi immédiat du formulaire
+
+    const adresseOrigine = document.getElementById('id_origine').value;
+    const adresseDestination = document.getElementById('id_destination').value;
+
+    const geocoder = new google.maps.Geocoder();
+
+    let coordOrigine = null;
+    let coordDestination = null;
+
+    // Géocoder l'origine
+    geocoder.geocode({ address: adresseOrigine }, function (results, status) {
+      if (status === "OK") {
+        coordOrigine = results[0].geometry.location;
+        document.getElementById('origine_coords').value =
+          coordOrigine.lat() + "," + coordOrigine.lng();
+
+        // Puis géocoder la destination
+        geocoder.geocode({ address: adresseDestination }, function (results, status) {
+          if (status === "OK") {
+            coordDestination = results[0].geometry.location;
+            document.getElementById('destination_coords').value =
+              coordDestination.lat() + "," + coordDestination.lng();
+
+            // Une fois les deux coordonnées remplies, on soumet le formulaire
+            e.target.closest('form').submit();
+          } else {
+            alert("Erreur géocodage destination : " + status);
+          }
+        });
+      } else {
+        alert("Erreur géocodage origine : " + status);
+      }
+    });
+  });
+</script>
+
+
+  <!-- Import de l’API Google Maps avec ta clé API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkIuqnZARwmMbomZLOdg4tnBQgid3LhFI&callback=initMap" async defer></script>
+
 {% endblock %}

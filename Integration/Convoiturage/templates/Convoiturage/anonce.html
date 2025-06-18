@@ -1,129 +1,53 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends 'Convoiturage/base.html' %}
+{% load static %} {# Charge le tag 'static' pour les fichiers CSS et JS #}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="asset/css/anonce.css">
-    <title> Annonces Conducteurs</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Montserrat');
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f6f9fc;
-            color: #333;
-            padding: 20px;
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #014886;
-        }
-        
-        .annonce {
-            padding: 15px 20px;
-        }
-        
-        .annonce:hover {
-            transform: translateY(-3px);
-        }
-        
-        .annonce p {
-            margin: 6px 0;
-        }
-        
-        .annonce strong {
-            color: #014886;
-        }
-        
-        .actions {
-            margin-top: 12px;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .actions button {
-            padding: 8px 14px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s ease;
-        }
-        
-        .contact {
-            background-color: #014886;
-            color: white;
-        }
-        
-        .supprimer {
-            background-color: #014886;
-            color: white;
-        }
-        
-        @media screen and(max-width: 600px) {
-            body {
-                padding: 15px;
-            }
-            .annonce {
-                padding: 14px 16px;
-            }
-        }
-    </style>
-</head>
+{% block title %}Annonces Conducteurs{% endblock %} 
 
-<body>
-    <h1>Annonces disponibles</h1>
-    <div id="listeAnnonces"></div>
-    <script>
-        function afficherToutesLesAnnonces() {
-            const annonces = JSON.parse(localStorage.getItem("annoncesConducteurs") || "[]");
-            const conteneur = document.getElementById("listeAnnonces");
-            conteneur.innerHTML = "";
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'Convoiturage/css/anonce.css' %}" />
+{% endblock %}
 
-            if (annonces.length === 0) {
-                conteneur.innerHTML = "<p style='text-align:center;'>Aucune annonce disponible pour le moment.</p>";
-                return;
-            }
+{% block content %}
+<h2>Trajets disponibles</h2>
 
-            annonces.forEach((a, index) => {
-                const div = document.createElement("div");
-                div.className = "annonce";
-                div.innerHTML = `
-                <p><strong>${a.nom}</strong> • ${a.voiture} • ${a.prix} €</p>
-                <p>Départ: ${a.depart}</p>
-                <p>Destination: ${a.destination}</p>
-                <p>Date & Heure: ${new Date(a.datetime).toLocaleString()}</p>
-                <div class="actions">
-                    <button class="contact" onclick="contacter()">Contacter</button>
-                    <button class="supprimer" onclick="supprimerAnnonce(${index})">Supprimer</button>
-                    <button class="reserver" onclick="ouvrirReservation('${a.nom}', '${a.depart}', '${a.destination}')">Réserver</button>
-                </div>
-            `;
-                conteneur.appendChild(div);
-            });
-        }
+{% if trajets %}
+<table border="1">
+  <tr>
+    <th>Départ</th>
+    <th>Arrivée</th>
+    <th>Date</th>
+    <th>Heure</th>
+    <th>Places</th>
+    <th>Prix</th>
+    <th>Action</th>
+  </tr>
+  {% for trajet in trajets %}
+    <tr>
+      <td>{{ trajet.origine }}</td>
+      <td>{{ trajet.destination }}</td>
+      <td>{{ trajet.date_depart }}</td>
+      <td>{{ trajet.heure_depart }}</td>
+      <td>{{ trajet.nombre_places }}</td>
+      <td>{{ trajet.prix_par_place }} FCFA</td>
+      <td>
+        <form method="post" action="{% url 'reserver_trajet' trajet.id %}">
+          {% csrf_token %}
+          <button type="submit">Réserver</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
 
-        function contacter() {
-            alert("Cette fonctionnalité arrive bientôt!");
-        }
+{% else %}
+  <p>Aucun trajet n’est disponible pour le moment.</p>
+{% endif %}
+    <script src="{% static 'Convoiturage/js/anonce.js' %}"></script>
+{% endblock %}
 
-        function supprimerAnnonce(index) {
-            let annonces = JSON.parse(localStorage.getItem("annoncesConducteurs") || "[]");
-            annonces.splice(index, 1);
-            localStorage.setItem("annoncesConducteurs", JSON.stringify(annonces));
-            afficherToutesLesAnnonces();
-        }
+{% block extra_js %}
+    {# Scripts Ionicons pour les icônes. #}
 
-        function ouvrirReservation(nom, depart, destination) {
-            alert("Réservation pour ${nom}de ${depart}vers ${destination}");
-        }
-        // Appel automatique au chargement
-        window.onload = afficherToutesLesAnnonces;
-    </script>
-    <script src="asset/js/anonce.js"></script>
-</body>
-
-</html>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+{% endblock %}

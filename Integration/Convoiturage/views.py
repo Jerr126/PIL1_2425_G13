@@ -1,20 +1,22 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import UtilisateurProfileForm # Importez votre formulaire
-from .forms import UserRegistrationForm
+from .forms import UtilisateurProfileForm, UserRegistrationForm, ConnexionForm, ProposeTripForm, TrajetSearchForm
 from django.contrib.auth import authenticate, login, logout # Pour la connexion/déconnexion
-from .forms import ConnexionForm, UserRegistrationForm # Importez les nouveaux formulaires
 from django.db.models import Q # Pour des requêtes complexes (OR, AND)
-from datetime import datetime, date, timedelta # 'datetime' et 'date' pour la manipulation des dates/heures
-from .forms import UtilisateurProfileForm, TrajetSearchForm, ProposeTripForm
-from .models import Trajet # Assurez-vous d'importer votre modèle Trajet
+from datetime import datetime, date # 'datetime' et 'date' pour la manipulation des dates/heures 
+from .models import Trajet, Reservation
+from django.contrib.gis.geos import Point
+from .forms import ProposeTripForm  # ton formulaire
+from django.shortcuts import redirect, get_object_or_404
+
 
 
 # Create your views here.
-
+@login_required
 def home(request):
-    return render(request, 'Convoiturage/index.html')
+    return render(request, 'Convoiturage/home.html')
+
 
 # Vue pour la page de connexion et d'inscription
 
@@ -32,7 +34,7 @@ def login_register_view(request):
                 if user is not None:
                     login(request, user)
                     messages.success(request, 'Connexion réussie !')
-                    return redirect('profile') # Rediriger vers la page de profil
+                    return redirect('home') # Rediriger vers la page de profil
                 else:
                     messages.error(request, 'Identifiants invalides.')
             else:
@@ -44,7 +46,7 @@ def login_register_view(request):
                 # Optionnel: connecter l'utilisateur immédiatement après l'inscription
                 login(request, user)
                 messages.success(request, 'Votre compte a été créé avec succès !')
-                return redirect('profile')
+                return redirect('home')
             else:
                 messages.error(request, 'Veuillez corriger les erreurs d\'inscription.')
 
@@ -55,13 +57,15 @@ def login_register_view(request):
     return render(request, 'Convoiturage/page_inscription.html', context)
 
 # La vue de déconnexion reste la même
+@login_required
 def logout_view(request):
     logout(request)
     messages.info(request, "Vous avez été déconnecté.")
     return redirect('login_register')
 
-
-
+@login_required
+def settings(request):
+    return render(request, 'Convoiturage/settings.html')  
 
 
 
@@ -91,6 +95,10 @@ def profile_view(request):
 def search_trip_view(request):
     form = TrajetSearchForm(request.GET or None) # Utilise request.GET pour les paramètres d'URL
     results = [] # Pour stocker les trajets trouvés
+     # Vérifier si l'utilisateur est un conducteur
+    if  request.user.is_conducteur:
+        messages.warning(request, "Vous devez être enregistré comme Utilisateur pour rechercher un trajet.")
+        return redirect('profile') # Rediriger vers la page de profil pour changer de statut
 
     if form.is_valid():
         origine = form.cleaned_data.get('origine')
@@ -118,36 +126,12 @@ def search_trip_view(request):
         # Filtrage par date de départ spécifique
         if date_depart:
             queryset = queryset.filter(date_depart=date_depart)
-            # Si la date est aujourd'hui, filtrer aussi par l'heure
+            # Si la date est aujourd'hui, filtrer aussi par l'heuredz 
             if date_depart == today:
                 queryset = queryset.filter(heure_depart__gte=now)
         else:
             # Si pas de date spécifique, trier les trajets à venir par pertinence (plus tôt = plus pertinent)
             queryset = queryset.order_by('date_depart', 'heure_depart')
-
-
-        # Logique de "matching" et d'ordre :
-        # Les trajets "mieux placés" sont ceux qui correspondent le plus précisément
-        # et qui partent le plus tôt.
-
-        # 1. Correspondance exacte d'origine/destination :
-        # C'est déjà fait par le filter ci-dessus.
-
-        # 2. Proximité géographique (si vous avez des données de localisation) :
-        # Ceci est complexe et nécessiterait des champs de latitude/longitude
-        # et une bibliothèque comme GeoDjango ou des calculs de distance Haversine.
-        # Pour l'instant, on se base sur les chaînes de caractères.
-        # Si vous avez des noms de villes/lieux standardisés, cela simplifie.
-
-        # 3. Ordre par date/heure : Les plus proches dans le temps en premier.
-        # C'est géré par queryset.order_by('date_depart', 'heure_depart')
-
-        # 4. Ordre par prix (du moins cher au plus cher, ou option de l'utilisateur)
-        # Vous pouvez ajouter .order_by('prix_par_place') si c'est un critère.
-        # Exemple: queryset = queryset.order_by('prix_par_place', 'date_depart', 'heure_depart')
-
-        # 5. Ordre par nombre de places disponibles (plus de places = plus de choix)
-        # Example: .order_by('-nombre_places')
 
         results = queryset.select_related('conducteur').all() # Optimisation pour récupérer les infos du conducteur
 
@@ -158,30 +142,79 @@ def search_trip_view(request):
         'form': form,
         'results': results,
     }
-    return render(request, 'Convoiturage/search_results.html', context)
+    return render(request, 'Convoiturage/search_trip.html', context)
 
-# @login_required
+
+
+
+
+@login_required
 def propose_trip_view(request):
     """
     Vue pour qu'un conducteur puisse proposer un trajet.
     """
+
     # Vérifier si l'utilisateur est un conducteur
     if not request.user.is_conducteur:
         messages.warning(request, "Vous devez être enregistré comme conducteur pour proposer un trajet.")
-        return redirect('profile') # Rediriger vers la page de profil pour changer de statut
+        return redirect('profile')  # Rediriger vers la page de profil
 
     if request.method == 'POST':
-        form = ProposeTripForm(request.POST) # Vous devrez créer ce formulaire
+        form = ProposeTripForm(request.POST)
         if form.is_valid():
             trip = form.save(commit=False)
-            trip.conducteur = request.user # Assigner le conducteur actuel
+            trip.conducteur = request.user  # Assigner le conducteur actuel
+
+            # Récupérer les coordonnées GPS depuis les champs cachés
+            origine_coords_str = request.POST.get('origine_coords')  # format : "lat,lng"
+            destination_coords_str = request.POST.get('destination_coords')
+
+            # Convertir les chaînes en Points GeoDjango
+            if origine_coords_str:
+                lat, lng = map(float, origine_coords_str.split(','))
+                trip.origine_coords = Point(lng, lat)  # Point(lon, lat)
+
+            if destination_coords_str:
+                lat, lng = map(float, destination_coords_str.split(','))
+                trip.destination_coords = Point(lng, lat)
+
             trip.save()
             messages.success(request, "Votre trajet a été proposé avec succès !")
-            return redirect('home') # Rediriger vers la page d'accueil ou de gestion des trajets
+            return redirect('home')
         else:
             messages.error(request, "Veuillez corriger les erreurs dans le formulaire.")
     else:
-        form = ProposeTripForm() # Initialisez un formulaire vide
+        form = ProposeTripForm()
 
-    context = {'form': form}
-    return render(request, 'Convoiturage/propose_trip.html', context)
+    return render(request, 'Convoiturage/propose_trip.html', {'form': form})
+
+
+@login_required
+def annonce(request):
+    trajets = Trajet.objects.all().order_by('origine_coords', 'date_depart')  
+
+    return render(request, 'Convoiturage/anonce.html', {
+        'trajets': trajets
+    })
+@login_required
+def historique(request):
+    reservations = Reservation.objects.filter(Utilisateur=request.user).select_related('tra')
+    return render(request, 'Convoiturage/reservation.html', {
+        'reservations': reservations
+    })
+
+
+
+
+@login_required
+def reserver_trajet(request, trajet_id):
+    tra = get_object_or_404(Trajet, id=trajet_id)
+
+    if Reservation.objects.filter(Utilisateur=request.user, tra=tra).exists():
+        messages.info(request, "Vous avez déjà réservé ce trajet.")
+    else:
+        Reservation.objects.create(Utilisateur=request.user, tra=tra)
+        messages.success(request, "Trajet réservé avec succès !")
+
+    return redirect('annonce')
+

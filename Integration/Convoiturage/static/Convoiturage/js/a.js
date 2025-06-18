@@ -2,63 +2,63 @@
 
 // --- Variables globales (moins utilisées avec Django, car le backend gère les données utilisateur) ---
 // userMode et userName sont maintenant gérés par Django et passés au template via le contexte.
+// Si vous avez besoin de ces valeurs en JS, passez-les depuis le template Django via des attributs data-*
+// ou des variables globales définies dans le template avec {% if user.is_authenticated %}<script>let userName = "{{ user.username }}";</script>{% endif %}
 // let userMode = "passenger"; // Géré par Django via user.is_conducteur
-// let userName = "Marie";     // Géré par Django via user.username ou user.first_name
+// let userName = "Marie";     // Géré par Django via user.username ou user.first_name
 
 // publishedRides : Cette variable stockait les trajets publiés côté client.
 // Avec Django, les trajets sont stockés dans la base de données et récupérés/affichés par les vues.
-// let publishedRides = []; 
+// let publishedRides = [];
 
-
-// --- Éléments du DOM pour le menu mobile (ces IDs doivent être présents dans votre HTML si vous utilisez cette logique) ---
-// Ces variables ne sont nécessaires que si vous avez un menu mobile séparé de la navigation principale.
-// Si votre navigation est gérée entièrement par la barre Ionicons dans home.html, vous pouvez commenter/supprimer ces lignes
-// et les fonctions associées (toggleMenu, closeMenu).
+// --- Éléments du DOM pour le menu mobile (commenté car non présent dans le HTML fourni, mais peut être réactivé si besoin) ---
 // const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 // const menuSpace = document.getElementById('menuSpace');
 
-
 // --- Gestion du menu mobile (si vous en avez un) ---
-// mobileMenuBtn.addEventListener('click', toggleMenu);
+// if (mobileMenuBtn) {
+//     mobileMenuBtn.addEventListener('click', toggleMenu);
+// }
 
-// // Fermer le menu en cliquant à l'extérieur
 // document.addEventListener('click', (e) => {
-//   if (menuSpace && mobileMenuBtn && !menuSpace.contains(e.target) && e.target !== mobileMenuBtn) {
-//     closeMenu();
-//   }
+//   if (menuSpace && mobileMenuBtn && !menuSpace.contains(e.target) && e.target !== mobileMenuBtn) {
+//     closeMenu();
+//   }
 // });
 
 // function toggleMenu() {
-//   if (menuSpace) {
-//     menuSpace.classList.toggle('active');
-//   }
+//   if (menuSpace) {
+//     menuSpace.classList.toggle('active');
+//   }
 // }
 
 // function closeMenu() {
-//   if (menuSpace) {
-//     menuSpace.classList.remove('active');
-//   }
+//   if (menuSpace) {
+//     menuSpace.classList.remove('active');
+//   }
 // }
 
 
 // --- Gestion de la barre de navigation Ionicons ---
 // Cette partie est cruciale pour le comportement visuel de votre barre de navigation.
-const list = document.querySelectorAll('.list'); // Sélectionne tous les éléments avec la classe 'list' (vos liens de navigation)
+// Elle n'est plus gérée par ce script JS puisque la classe 'active' est ajoutée côté Django dans le base.html.
+// Cependant, vous pourriez la conserver si vous voulez des effets visuels supplémentaires au clic.
+const list = document.querySelectorAll('.list');
 
 function activeLink() {
-    // Supprime la classe 'active' de tous les éléments 'list'
+    // Cette fonction n'est utile que si vous voulez un indicateur visuel dynamique au clic,
+    // en plus de l'indicateur géré par Django au chargement de la page.
+    // Si la page est rechargée après un clic, la logique Django reprend le contrôle.
     list.forEach((item) => item.classList.remove('active'));
-    // Ajoute la classe 'active' à l'élément sur lequel on a cliqué
     this.classList.add('active');
 }
-// Ajoute un écouteur d'événement 'click' à chaque élément 'list' pour appeler 'activeLink'
 list.forEach((item) => item.addEventListener('click', activeLink));
 
 
 // --- Fonctions de gestion des popups (celles qui sont encore nécessaires) ---
 
 // Fonction pour afficher une popup donnée par son ID.
-// Utilisée pour la popup de "changement de mode" et la "publication réussie" si vous la conservez.
+// Utilisée pour la popup de "changement de mode" et la "publication réussie".
 function showPopup(id) {
     const popupElement = document.getElementById(id);
     if (popupElement) {
@@ -76,7 +76,7 @@ function closePopup() {
     }
 }
 
-// Fonction pour fermer la popup de succès de publication (si vous la gardez).
+// Fonction pour fermer la popup de succès de publication.
 function closePublishSuccessPopup() {
     const popupElement = document.getElementById('publishSuccessPopup');
     if (popupElement) {
@@ -85,61 +85,96 @@ function closePublishSuccessPopup() {
     }
 }
 
-// --- Fonctions JavaScript liées à la logique de "Proposer un trajet" et "Rechercher un trajet" ---
-// Ces fonctions sont maintenant gérées directement par les redirections dans home.html vers les vues Django dédiées.
-// Par conséquent, elles sont commentées ou adaptées.
+// Fonctions pour ouvrir/fermer les popups de recherche et de publication
+// Ces fonctions ne sont plus appelées directement par les boutons principaux
+// du HTML d'accueil si ces boutons redirigent vers des pages Django.
+// Elles sont utiles si vous souhaitez que les popups restent des modales sur la même page.
 
-// Ancien: handleSearch() ouvrait une popup de recherche.
-// Nouveau: Le bouton "Trouver un trajet" dans home.html redirige directement vers {% url 'search_trip' %}.
-/*
-function handleSearch() {
+function openSearchPopup() {
     showPopup('searchPopup');
-    // Pré-remplir la date du jour et l'heure (cette logique est maintenant mieux gérée directement dans le formulaire Django si besoin)
+    // Pré-remplir la date et l'heure actuelles (si le formulaire n'est pas rempli par Django)
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
     const now = new Date();
-    now.setHours(now.getHours() + 1);
+    now.setHours(now.getHours() + 1); // Heure actuelle + 1h
     document.getElementById('time').value = now.toTimeString().substring(0, 5);
 }
-*/
 
-// Ancien: handlePublish() ouvrait la popup de publication ou la popup de "changement de mode".
-// Nouveau: Cette logique est maintenant gérée par la fonction 'checkConducteurStatus()' directement dans <script> de home.html.
-/*
-function handlePublish() {
-    // userMode n'est plus une variable JS, mais un statut Django via 'user.is_conducteur'
-    // Cette logique est déplacée dans le JavaScript intégré à home.html pour utiliser le contexte Django.
-    // Si l'utilisateur est passager, on ouvre la popup 'popup' (changement de mode).
-    // Sinon, on ouvre la popup de publication (qui est maintenant une redirection vers une page Django).
+function closeSearchPopup() {
+    const popupElement = document.getElementById('searchPopup');
+    if (popupElement) {
+        popupElement.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
 }
-*/
 
-// Ancien: showPublishPopup() ouvrait la popup de publication.
-// Nouveau: Le bouton "Proposer un trajet" redirige directement vers {% url 'propose_trip' %} après vérification du statut.
-/*
-function showPublishPopup() {
-    // Pré-remplir la date et l'heure (cette logique est maintenant mieux gérée directement dans le formulaire Django si besoin)
+function openPublishPopup() {
+    showPopup('publishPopup');
+    // Pré-remplir la date et l'heure actuelles (si le formulaire n'est pas rempli par Django)
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('publishDate').value = today;
     const now = new Date();
-    now.setHours(now.getHours() + 1);
+    now.setHours(now.getHours() + 1); // Heure actuelle + 1h
     document.getElementById('publishTime').value = now.toTimeString().substring(0, 5);
-    showPopup('publishPopup');
 }
-*/
 
-// Ancien: closePublishPopup() fermait la popup de publication.
-// Nouveau: Non nécessaire, car nous redirigeons vers une autre page.
-/*
 function closePublishPopup() {
-    document.getElementById('publishPopup').style.display = "none";
-    document.body.style.overflow = "auto";
+    const popupElement = document.getElementById('publishPopup');
+    if (popupElement) {
+        popupElement.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
 }
-*/
 
-// Ancien: publishRide() gérait la logique de publication côté client (création d'objet, localStorage).
-// Nouveau: Cette logique est entièrement gérée par la vue Django (propose_trip_view) et le formulaire Django.
-/*
+
+// --- Fonctions JavaScript pour les actions (recherche, publication) ---
+// Ces fonctions sont maintenant censées interagir avec le backend Django.
+// Elles ne manipulent plus directement des tableaux JS ou le localStorage.
+
+// Fonction pour la recherche d'un trajet (appelée par le bouton dans la popup de recherche)
+function performSearch() {
+    const departure = document.getElementById('departure').value.trim();
+    const arrival = document.getElementById('arrival').value.trim();
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const passengers = document.getElementById('passengers').value;
+
+    if (!departure || !arrival) {
+        showAlert('Veuillez indiquer au moins une ville de départ et une destination.');
+        return;
+    }
+
+    // Ici, au lieu d'afficher une alerte, vous feriez une requête AJAX à une vue Django
+    // ou vous redirigeriez l'utilisateur vers une page de résultats avec les paramètres de recherche.
+    // Exemple de redirection (plus simple à mettre en place initialement) :
+    // Construisez l'URL de recherche avec les paramètres
+    const searchUrl = `/search/?departure=${encodeURIComponent(departure)}&arrival=${encodeURIComponent(arrival)}&date=${date}&time=${time}&passengers=${passengers}`;
+    window.location.href = searchUrl;
+
+    // Ou si vous voulez une requête AJAX (plus complexe, nécessiterait une vue API et un affichage dynamique)
+    /*
+    fetch('/api/search_trips/', {
+        method: 'POST', // Ou GET si les paramètres sont dans l'URL
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Fonction pour obtenir le CSRF token
+        },
+        body: JSON.stringify({ departure, arrival, date, time, passengers })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Traiter les résultats de la recherche (par exemple, afficher une liste de trajets)
+        console.log('Résultats de la recherche :', data);
+        closeSearchPopup();
+    })
+    .catch(error => {
+        console.error('Erreur lors de la recherche :', error);
+        showAlert('Une erreur est survenue lors de la recherche.');
+    });
+    */
+}
+
+// Fonction pour publier un trajet (appelée par le bouton dans la popup de publication)
 function publishRide() {
     const departure = document.getElementById('publishDeparture').value.trim();
     const arrival = document.getElementById('publishArrival').value.trim();
@@ -148,97 +183,69 @@ function publishRide() {
     const seats = document.getElementById('publishSeats').value;
     const price = document.getElementById('publishPrice').value;
     const car = document.getElementById('publishCar').value.trim();
-    
+
     if (!departure || !arrival || !car) {
-        showAlert('Veuillez remplir tous les champs obligatoires');
+        showAlert('Veuillez remplir tous les champs obligatoires.');
         return;
     }
-    
-    const newRide = {
-        id: Date.now(),
-        driver: userName, // userName viendrait de Django maintenant
-        from: departure,
-        to: arrival,
-        date: formatDate(date),
-        time: time,
-        seats: seats,
-        availableSeats: seats,
-        price: price,
-        car: car,
-        publishedAt: new Date().toLocaleString()
-    };
-    
-    publishedRides.unshift(newRide);
-    console.log('Trajet publié :', newRide);
-    
-    saveRidesToLocalStorage(); // Plus nécessaire avec une DB Django
-    
-    closePublishPopup();
-    showPopup('publishSuccessPopup');
-}
-*/
 
-// Ancien: saveRidesToLocalStorage() et loadRidesFromLocalStorage() géraient la persistance côté client.
-// Nouveau: Les données sont maintenant stockées dans la base de données via Django.
-/*
-function saveRidesToLocalStorage() {
-    localStorage.setItem('publishedRides', JSON.stringify(publishedRides));
+    // Ici, vous enverriez les données à une vue Django via AJAX.
+    // Cela nécessite une vue Django qui gère la soumission du formulaire de trajet.
+    // Exemple d'utilisation de Fetch API pour envoyer les données :
+    fetch('propose-trip/', { // Assurez-vous que cette URL est correcte et pointe vers votre vue Django
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Fonction utilitaire pour obtenir le CSRF token
+        },
+        body: JSON.stringify({
+            origine: departure, // Adaptez les noms de champs à ceux de votre modèle Django
+            destination: arrival,
+            date_depart: date,
+            heure_depart: time,
+            nombre_places: seats,
+            prix_par_place: price,
+            modele_voiture: car // Ajoutez ce champ à votre modèle Trajet si nécessaire
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json(); // Ou response.text() si la vue renvoie du texte
+        }
+        throw new Error('Erreur réseau ou réponse non OK.');
+    })
+    .then(data => {
+        console.log('Réponse du serveur :', data);
+        closePublishPopup();
+        showPopup('publishSuccessPopup'); // Affiche la popup de succès
+        // Vous pouvez aussi recharger la page ou rediriger ici si nécessaire
+        // window.location.reload();
+    })
+    .catch(error => {
+        console.error('Erreur lors de la publication du trajet :', error);
+        showAlert('Une erreur est survenue lors de la publication de votre trajet.');
+    });
 }
 
-function loadRidesFromLocalStorage() {
-    const rides = localStorage.getItem('publishedRides');
-    if (rides) {
-        publishedRides = JSON.parse(rides);
+
+// --- Fonctions utilitaires ---
+
+// Fonction pour obtenir le CSRF token (indispensable pour les requêtes POST/PUT/DELETE AJAX avec Django)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
+    return cookieValue;
 }
-*/
-
-// Ancien: closeSearchPopup() fermait la popup de recherche.
-// Nouveau: Non nécessaire, car nous redirigeons vers une autre page.
-/*
-function closeSearchPopup() {
-    document.getElementById('searchPopup').style.display = "none";
-    document.body.style.overflow = "auto";
-}
-*/
-
-// Ancien: redirectToProfile() redirigeait vers un fichier HTML statique.
-// Nouveau: La redirection est gérée directement dans home.html avec {% url 'profile' %}.
-/*
-function redirectToProfile() {
-    sessionStorage.setItem('redirectAfterProfile', 'publish.html'); // Cette logique n'est plus pertinente
-    window.location.href = "profile.html"; // Utilisez {% url 'profile' %} dans le template
-}
-*/
-
-// Ancien: performSearch() gérait la recherche côté client et l'affichage d'une alerte.
-// Nouveau: Cette logique est entièrement gérée par la vue Django (search_trip_view) et le formulaire Django.
-/*
-function performSearch() {
-    const departure = document.getElementById('departure').value.trim();
-    const arrival = document.getElementById('arrival').value.trim();
-    const date = document.getElementById('date').value;
-    const time = document.getElementById('time').value;
-    const passengers = document.getElementById('passengers').value;
-    
-    if (!departure || !arrival) {
-        showAlert('Veuillez indiquer au moins une ville de départ et une destination');
-        return;
-    }
-    
-    const searchData = {
-        from: departure,
-        to: arrival,
-        date: formatDate(date),
-        time: time,
-        seats: passengers
-    };
-    
-    console.log('Recherche lancée :', searchData);
-    closeSearchPopup();
-    showAlert(`Recherche effectuée :\nDe ${searchData.from} à ${searchData.to}\nLe ${searchData.date} à ${searchData.time}\nPlaces : ${searchData.seats}`);
-}
-*/
 
 // showAlert() peut être conservée si vous souhaitez des alertes JavaScript pour des feedbacks non critiques.
 function showAlert(message) {
@@ -256,35 +263,59 @@ function formatDate(dateString) {
 document.addEventListener('DOMContentLoaded', () => {
     animateElements(); // Appelle la fonction d'animation au chargement
 
-    // Simuler un temps de chargement et personnaliser le placeholder de la barre de recherche.
-    // userName est maintenant un contexte Django, donc cette ligne devrait être mise à jour
-    // pour que le placeholder soit défini directement dans le HTML avec {{ user.username }}
-    // ou passé en JS via une variable globale si absolument nécessaire.
+    // Gérer l'état initial de la barre de navigation (la classe 'active')
+    // C'est mieux géré dans le template Django avec {% if request.resolver_match.url_name == 'accueil' %}active{% endif %}
+    // Mais si vous avez une logique JS pour cela, vous pouvez la mettre ici.
+    // Par exemple, si vous voulez que la barre Ionicons ait une animation différente au chargement.
+
+    // Gérer le placeholder de la barre de recherche.
+    // Si 'userName' est passé globalement depuis le template Django :
     /*
-    setTimeout(() => {
-        const searchInput = document.querySelector('.search-bar input');
-        if (searchInput) {
-            // userName n'est pas accessible directement ici depuis Django.
-            // Il faudrait le passer via un attribut data- ou une variable globale dans le template.
-            // Pour l'instant, on peut laisser un placeholder générique ou le récupérer si userName est exposé globalement.
-            // searchInput.placeholder = `${userName}, où souhaitez-vous aller aujourd'hui ?`;
-            searchInput.placeholder = `Où souhaitez-vous aller aujourd'hui ?`; // Placeholder générique
-        }
-    }, 1000);
+    const searchInput = document.querySelector('.search-bar input');
+    if (searchInput && typeof userName !== 'undefined') {
+        searchInput.placeholder = `${userName}, où souhaitez-vous aller aujourd'hui ?`;
+    } else if (searchInput) {
+        searchInput.placeholder = `Où souhaitez-vous aller aujourd'hui ?`; // Placeholder générique
+    }
     */
+
+    // Ajout des écouteurs d'événements pour les boutons "Trouver un trajet" et "Proposer un trajet"
+    // S'ils ne redirigent pas directement, mais ouvrent une popup modale.
+    const findTripBtn = document.querySelector('.main-buttons button:first-child');
+    const publishTripBtn = document.querySelector('.main-buttons button:last-child');
+
+    if (findTripBtn) {
+        findTripBtn.onclick = openSearchPopup; // Ouvre la popup de recherche
+    }
+
+    if (publishTripBtn) {
+        // Pour le bouton "Proposer un trajet", nous devons vérifier le statut conducteur.
+        // Cette logique doit être passée depuis Django.
+        // Exemple : un attribut data-conducteur-status sur le body ou un script intégré.
+        const isConducteur = document.body.dataset.isConducteur === 'true'; // Récupérer depuis un attribut data-
+        
+        publishTripBtn.onclick = () => {
+            if (isConducteur) {
+                openPublishPopup(); // Ouvre la popup de publication
+            } else {
+                showPopup('popup'); // Ouvre la popup "changer de mode"
+            }
+        };
+    }
 });
+
 
 // Fonction pour les animations d'éléments au chargement.
 // Utile pour un effet visuel agréable.
 function animateElements() {
     const elements = document.querySelectorAll('.search-bar, .map-container, .main-buttons, .feature-card');
-    
+
     elements.forEach((el, i) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
         el.style.animation = `fadeInUp 0.5s ease-out ${i * 0.1}s forwards`;
     });
-    
+
     // Ajout du CSS pour l'animation (peut être déplacé dans un fichier CSS si vous préférez)
     const style = document.createElement('style');
     style.textContent = `

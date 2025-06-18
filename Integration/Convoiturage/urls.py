@@ -3,16 +3,18 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('login_register/', views.login_register_view, name='login_register'),
-    path('login/', views.login_register_view, name='login'), # Pour le traitement du POST de connexion
-    path('register/', views.login_register_view, name='register'), # Pour le traitement du POST d'inscription
+    path('home/', views.home, name='home'),
+    path('', views.login_register_view, name='login_register'),
+    path('login/', views.login_register_view, name='login'),
+    path('register/', views.login_register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile_view, name='profile'),
-<<<<<<< HEAD
     path('accounts/profile/', views.profile_view, name='profile'),
-=======
-     path('search-trip/', views.search_trip_view, name='search_trip'), # Nouvelle URL pour la recherche
+    path('search-trip/', views.search_trip_view, name='search_trip'),
     path('propose-trip/', views.propose_trip_view, name='propose_trip'),
->>>>>>> 5f9b0a4e994cca308a34160aa0c578405cbe3698
+    path('settings/', views.settings, name='settings'),
+    path('annonce/', views.annonce, name='annonce'),
+    path('historique/', views.historique, name='historique'),
+    path('reserver/<int:trajet_id>/', views.reserver_trajet, name='reserver_trajet')
+    
 ]

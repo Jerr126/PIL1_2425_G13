@@ -1,4 +1,3 @@
-/* Fichier: myapp/static/css/paramètre.css */
 
 /* 1. Importation de la police Google Fonts */
 /* Assurez-vous que cette URL est correcte et accessible */
@@ -18,12 +17,8 @@ body {
 
 /* 3. Styles du conteneur principal */
 .container {
-    max-width: 480px; /* Largeur maximale pour le contenu sur les écrans plus grands */
-    margin: auto; /* Centre le conteneur horizontalement */
     background-color: #eee; /* Fond du conteneur */
-    min-height: 100vh; /* S'assure que le conteneur prend au moins toute la hauteur de la vue */
-    padding-bottom: 20px;
-    justify-content: space-between; /* Peut ne pas avoir d'effet ici si le container n'est pas flex ou grid */
+    height: auto; /* S'assure que le conteneur prend au moins toute la hauteur de la vue */
 }
 
 /* 4. Styles de l'en-tête (Settings) */
@@ -62,7 +57,6 @@ body {
     justify-content: space-between; /* Espace entre l'icône/texte et la flèche */
     align-items: center; /* Centre verticalement les éléments */
     flex-wrap: nowrap;
-    transform: translateY(-25px); /* Décale l'élément vers le haut */
 }
 
 .item:first-child {
@@ -74,7 +68,6 @@ body {
 .icon {
     font-size: 20px; /* Taille de la police pour l'icône */
     width: 30px;
-    justify-content: space-between; /* Peut ne pas avoir d'effet sans display:flex sur cet élément */
 }
 
 /* 8. Styles du texte dans chaque élément (ex: Account, Privacy) */
@@ -120,8 +113,7 @@ body {
 /* Cette règle est plus spécifique et prendra le dessus sur la première '.icon' */
 .container ul li a .icon {
     color: #222; /* Couleur des icônes dans les liens */
-    margin-left: -25px; /* Décale l'icône vers la gauche */
-    margin-right: 15px; /* Espace à droite de l'icône */
+
 }
 
 /* 12. Styles de la section (qui est probablement un conteneur d'items, pas un 'section' HTML direct dans le code fourni) */
@@ -161,5 +153,4 @@ body {
 .arrow-icon {
     color: #888;
     padding-left: 350px; /* Gros padding pour pousser la flèche à droite. Peut être mieux géré avec flexbox. */
-    transform: translateY(-5px);
 }

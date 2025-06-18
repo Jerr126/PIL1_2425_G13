@@ -1,8 +1,7 @@
-{# myapp/templates/myapp/profile.html #}
-{% extends 'base.html' %}
+{% extends 'Convoiturage/base.html' %}
 {% load static %}
 
-{% block title %}Mon Profil Utilisateur - Covoiturage{% endblock %}
+{% block title %}Profil - ICE{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'Convoiturage/css/style_profil.css' %}">
@@ -12,32 +11,19 @@
     <div class="container">
         <div class="sidebar">
             <div class="profile-container">
-<<<<<<< HEAD:Integration/Convoiturage/templates/Convoiturage/page_profile.html
                 <div class="profile-picture" >
                 {% if user.profile_picture %}
                      <img src="{{ user.profile_picture.url }}" alt="Photo de profil">
                     {% else %}
                      <img src="{% static 'img/profile.jpg' %}" alt="Photo de profil par défaut">
                 {% endif %}
-=======
-                <input type="file" id="id_profile_picture" name="{{ form.profile_picture.name }}" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
-                <div class="profile-picture" onclick="document.getElementById('id_profile_picture').click()">
-                    <img id="avatar" src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'ressources/img/profil.jpg' %}{% endif %}" alt="Photo de profil">
-                </div>
-                <div class="user-info">
-                    <h3>{{ user.get_full_name|default:user.username }}</h3>
-                    <p>{{ user.email }}</p>
-                    <p>{{ user.num_tel|default:"Non spécifié" }}</p>
->>>>>>> 5f9b0a4e994cca308a34160aa0c578405cbe3698:Integration/Convoiturage/templates/Convoiturage/page_profil.html
                 </div>
             </div>
 
             <div class="nav">
                 {# Pour le profil, la navigation latérale est une convention. #}
-                {# Ces boutons pourraient devenir des liens si vous avez plusieurs sous-sections dans le profil #}
-                <button class="active">Informations Personnelles</button>
-                {# <button>Sécurité</button> #}
-                {# <button>Préférences</button> #}
+                <button class="active">Informations Personnelles ➯</button>
+
             </div>
         </div>
 
@@ -62,18 +48,11 @@
                         {{ form.first_name }}
                         {% if form.first_name.errors %}<ul class="errorlist">{% for error in form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                     </div>
-<<<<<<< HEAD:Integration/Convoiturage/templates/Convoiturage/page_profile.html
                      <div>
                         <label for="{{ form.username.id_for_label }}">Nom d'Utilisateur</label>
                         {{ form.username }} {# Affiche le champ prénoms (first_name) #}
                         <span class="emoji-edit" title="Modifier">🖍</span>
                         {% if form.username.errors %}<ul class="errorlist">{% for error in form.userame.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
-=======
-                    <div>
-                        <label for="{{ form.last_name.id_for_label }}">Nom</label>
-                        {{ form.last_name }}
-                        {% if form.last_name.errors %}<ul class="errorlist">{% for error in form.last_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
->>>>>>> 5f9b0a4e994cca308a34160aa0c578405cbe3698:Integration/Convoiturage/templates/Convoiturage/page_profil.html
                     </div>
                     <div class="full-width">
                         <label for="{{ form.email.id_for_label }}">Email</label>
@@ -107,11 +86,6 @@
                         <label for="{{ form.matricule.id_for_label }}">Matricule</label>
                         {{ form.matricule }}
                         {% if form.matricule.errors %}<ul class="errorlist">{% for error in form.matricule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
-                    </div>
-                    <div class="full-width">
-                        <label for="{{ form.position.id_for_label }}">Position (Point de départ préféré)</label>
-                        {{ form.position }}
-                        {% if form.position.errors %}<ul class="errorlist">{% for error in form.position.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
                     </div>
                 </div>
 

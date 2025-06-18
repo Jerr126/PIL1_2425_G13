@@ -1,5 +1,5 @@
-{# myapp/templates/myapp/search_results.html #}
-{% extends 'base.html' %}
+
+{% extends 'Convoiturage/base.html' %}
 {% load static %}
 
 {% block title %}Rechercher un Trajet - Covoiturage{% endblock %}
@@ -85,8 +85,7 @@
             button.addEventListener('click', function() {
                 const driverId = this.dataset.driverId;
                 alert('Fonctionnalité de contact du conducteur ' + driverId + ' à implémenter. Redirection future vers une page de chat ou de réservation.');
-                // Exemple de redirection future :
-                // window.location.href = `/messages/new/?to=${driverId}`;
+
             });
         });
     </script>

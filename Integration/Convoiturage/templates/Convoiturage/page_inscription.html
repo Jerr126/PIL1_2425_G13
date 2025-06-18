@@ -1,13 +1,12 @@
-{% load static %} {# <-- TRÈS IMPORTANT : charge le tag 'static' #}
+{% load static %} 
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {# Lien vers Font Awesome - reste inchangé car c'est une ressource externe #}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-    {# Lien vers votre fichier CSS d'inscription. Assurez-vous qu'il est dans Convoiturage/static/Convoiturage/css/ #}
+
     <link rel="stylesheet" href="{% static 'Convoiturage/css/inscription.css' %}">
     <title>Connexion-Inscription</title>
 </head>
@@ -31,24 +30,22 @@
 
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    {# Rend le champ 'username' de votre formulaire de connexion. L'attribut placeholder est défini dans le widget du formulaire Django. #}
+                    
                     {{ login_form.username.as_widget }}
                 </div>
-                {# Affichage des erreurs spécifiques au champ 'username' #}
+
                 {% if login_form.username.errors %}<ul class="errorlist">{% for error in login_form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    {# Rend le champ 'password' de votre formulaire de connexion. #}
                     {{ login_form.password.as_widget }}
                 </div>
-                {# Affichage des erreurs spécifiques au champ 'password' #}
                 {% if login_form.password.errors %}<ul class="errorlist">{% for error in login_form.password.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
-                {# Affichage des erreurs non liées à un champ spécifique (ex: identifiants incorrects) #}
                 {% if login_form.non_field_errors %}
                     <ul class="errorlist">{% for error in login_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
                 {% endif %}
+                {% csrf_token %}
 
                 <input type="submit" value="Se connecter" class="btn" name="login_submit"> {# Ajout de 'name' pour la distinction dans la vue #}
                 <div class="options">
@@ -69,10 +66,10 @@
                 {% csrf_token %} {# Jetons CSRF pour la sécurité - OBLIGATOIRE #}
                 <h2 class="title">Inscription</h2>
 
-                {# Les champs 'first_name' et 'last_name' viennent d'AbstractUser, donc ils sont automatiquement inclus dans UserRegistrationForm #}
+                
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    {# Pour le prénom #}
+            
                     {{ registration_form.first_name.as_widget }}
                 </div>
                 {% if registration_form.first_name.errors %}<ul class="errorlist">{% for error in registration_form.first_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
@@ -84,7 +81,6 @@
                 </div>
                 {% if registration_form.last_name.errors %}<ul class="errorlist">{% for error in registration_form.last_name.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
-                {# Le champ 'username' de UserCreationForm #}
                 <div class="input-field">
                     <i class="fas fa-id-card"></i> {# Icône pour le nom d'utilisateur #}
                     {{ registration_form.username.as_widget }} {# Peut être défini ici si non dans le form Django #}
@@ -138,7 +134,7 @@
                 </div>
                 {% if registration_form.matricule.errors %}<ul class="errorlist">{% for error in registration_form.matricule.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
 
-                     {% if registration_form.errors %}
+                 <!--    {% if registration_form.errors %}
                         <div class="alert alert-danger">
                             <p>Veuillez corriger les erreurs suivantes :</p>
                             <ul>
@@ -155,30 +151,19 @@
                         </div>
                     {% endif %}
 
-                    {# Ou pour des erreurs spécifiques à un champ #}
                     {{ registration_form.first_name.errors }}
                     {{ registration_form.email.errors }}
                     {{ registration_form.password.errors }}
                     {{ registration_form.password_confirm.errors }}
                     {{ registration_form.type_vehicule.errors }}
-                    {{ registration_form.matricule.errors }}
+                    {{ registration_form.matricule.errors }}-->
 
-                {# Affichage des erreurs non liées à un champ spécifique pour l'inscription #}
                 {% if registration_form.non_field_errors %}
                     <ul class="errorlist">{% for error in registration_form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
                 {% endif %}
-
+                   {% csrf_token %}
                 <input type="submit" value="S'inscrire" class="btn" name="register_submit"> {# Ajout de 'name' pour la distinction dans la vue #}
-                <!--<div class="options">
-                    <label><input type="checkbox" name="remember"> Se souvenir du mot de passe</label> {# Le champ 'remember' devra être géré manuellement ou via une librairie Django #}
-                </div>
-                <p class="social-text">Ou S'inscrire avec</p>
-                <div class="social-media">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                </div>-->
+
             </form>
         </div>
 
@@ -203,7 +188,6 @@
     </div>
     {# Votre script JavaScript pour le basculement des formulaires #}
     <script src="{% static 'Convoiturage/js/inscription.js' %}"></script>
-    {# Script JavaScript pour gérer l'affichage/masquage des champs spécifiques au conducteur #}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Assurez-vous que l'ID correspond à celui généré par Django pour la checkbox is_conducteur

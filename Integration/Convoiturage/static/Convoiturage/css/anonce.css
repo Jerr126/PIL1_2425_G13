@@ -2,3 +2,68 @@
     background-color: #ffd166;
     color: #333;
 }
+
+  @import url('https://fonts.googleapis.com/css?family=Montserrat');
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f6f9fc;
+            color: #333;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #014886;
+        }
+        
+        .annonce {
+            padding: 15px 20px;
+        }
+        
+        .annonce:hover {
+            transform: translateY(-3px);
+        }
+        
+        .annonce p {
+            margin: 6px 0;
+        }
+        
+        .annonce strong {
+            color: #014886;
+        }
+        
+        .actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .actions button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+        
+        .contact {
+            background-color: #014886;
+            color: white;
+        }
+        
+        .supprimer {
+            background-color: #014886;
+            color: white;
+        }
+        
+        @media screen and(max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .annonce {
+                padding: 14px 16px;
+            }
+        }

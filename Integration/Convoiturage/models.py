@@ -2,7 +2,8 @@ from django.contrib.gis.db import models
 from django.core.validators import RegexValidator 
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings # Pour lier à notre modèle d'utilisateur personnalisé
-from datetime import datetime, timedelta
+from datetime import datetime
+
 
 
 class Utilisateur(AbstractUser):
@@ -49,16 +50,18 @@ class Trajet(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='trajets_proposes',
+        default=1,
         limit_choices_to={'is_conducteur': True} # S'assurer que seul un conducteur peut proposer un trajet
     )
 
-    origine = models.CharField(max_length=255, verbose_name="Lieu de départ")
-    destination = models.CharField(max_length=255, verbose_name="Lieu d'arrivée")
+    origine = models.CharField(verbose_name="Lieu de départ", null=True, blank=True)
+    destination = models.CharField(verbose_name="Lieu d'arrivée", null=True, blank=True)
+    origine_coords = models.PointField(null=True, blank=True)
+    destination_coords = models.PointField(null=True, blank=True)
     date_depart = models.DateField(verbose_name="Date de départ")
     heure_depart = models.TimeField(verbose_name="Heure de départ")
-    nombre_places = models.PositiveIntegerField(default=1, verbose_name="Nombre de places disponibles")
-    prix_par_place = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Prix par place")
-    description = models.TextField(blank=True, null=True, verbose_name="Description du trajet")
+    nombre_places = models.PositiveIntegerField(default=0, verbose_name="places disponibles")
+    prix_par_place = models.PositiveIntegerField(default=200, verbose_name="Prix par place")
     date_creation = models.DateTimeField(auto_now_add=True)
     actif = models.BooleanField(default=True, verbose_name="Trajet actif")
 
@@ -74,3 +77,12 @@ class Trajet(models.Model):
     @property
     def datetime_depart(self):
         return datetime.combine(self.date_depart, self.heure_depart)
+
+
+class Reservation(models.Model):
+    Utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    tra = models.ForeignKey('Trajet', on_delete=models.CASCADE)
+    date_reservation = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('Utilisateur', 'tra')  # Empêche la double réservation

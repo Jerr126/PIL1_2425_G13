@@ -200,7 +200,7 @@ main {
     flex: 1;
     padding: 20px;
     /* Vous pouvez ajouter une couleur de fond par défaut ou la laisser transparente pour voir le body background */
-    /* background-color: #f8f8f8; */
+    background-color: #f8f8f8; */
 }
 
 .text-center { text-align: center; }

@@ -78,7 +78,7 @@ AUTH_USER_MODEL = 'Convoiturage.Utilisateur'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'ice_g13',
+        'NAME': 'ice_g',
         'USER': 'postgres',
         'PASSWORD': 'MySQL&2005&Yohanan',
         'HOST': 'localhost', # Ou l'adresse IP de votre serveur PostgreSQL
@@ -133,9 +133,9 @@ STATICFILES_DIRS = [
 ]
 
 # 4. Configuration des fichiers médias (photos de profil uploadées)
-MEDIA_URL = '/media/'
+MEDIA_URL = 'Convoiturage/media/'
 # Dossier où les fichiers uploadés seront stockés
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Covoiturage/media/profile_pics')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

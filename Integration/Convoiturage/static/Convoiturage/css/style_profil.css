@@ -221,16 +221,8 @@ label {
 .emoji-edit {
     cursor: pointer;
     font-size: 18px;
-<<<<<<< HEAD
     transform: translateY(-50%); /* Ajustement pour le centrage parfait */
     color: #bbb; /* Rendre l'emoji visible sur fond sombre */
-=======
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #bbb;
->>>>>>> 5f9b0a4e994cca308a34160aa0c578405cbe3698
 }
 
 /* Vehicle Info Section (hidden/shown by JS) */

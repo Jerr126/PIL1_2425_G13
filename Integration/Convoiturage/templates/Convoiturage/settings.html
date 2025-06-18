@@ -1,26 +1,21 @@
-{# myapp/templates/myapp/settings.html #}
-{% extends 'base.html' %} {# On étend le template de base pour une structure cohérente #}
-{% load static %} {# Charge le tag 'static' pour les fichiers CSS et JS #}
+{% extends 'Convoiturage/base.html' %} 
+{% load static %} 
 
-{% block title %}Paramètres{% endblock %} {# Définit le titre de la page #}
+{% block title %}Paramètres{% endblock %} 
 
 {% block extra_css %}
-    {# Lien vers votre fichier CSS spécifique aux paramètres. Assurez-vous que son chemin est correct. #}
-    {# Si 'paramètre.css' est dans 'static/css/', le chemin sera 'css/paramètre.css' #}
     <link rel="stylesheet" href="{% static 'Convoiturage/css/settings.css' %}" />
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        <header class="header">Settings</header> {# En-tête de la page de paramètres #}
 
         {# Section "Account" #}
         <div class="section">
             <div class="item">
                 <ul>
                     <li>
-                        {# REMPLACER 'z' par l'URL Django pour la gestion du compte (ex: 'account_settings') #}
-                        <a href="{% url 'account_settings' %}"> 
+                        <a href="{% url 'profile' %}"> 
                             <span class="icon">
                                 <ion-icon name="key-outline"></ion-icon>
                             </span>
@@ -37,8 +32,8 @@
             <div class="item">
                 <ul>
                     <li>
-                        {# REMPLACER 'z' par l'URL Django pour les paramètres de confidentialité (ex: 'privacy_settings') #}
-                        <a href="{% url 'privacy_settings' %}">
+
+                        <a href="#">
                             <span class="icon">
                                 <ion-icon name="lock-closed-outline"></ion-icon>
                             </span>
@@ -55,8 +50,8 @@
             <div class="item">
                 <ul>
                     <li>
-                        {# REMPLACER 'z' par l'URL Django pour les paramètres de chat (ex: 'chat_settings') #}
-                        <a href="{% url 'chat_settings' %}">
+
+                        <a href="#">
                             <span class="icon">
                                 <ion-icon name="chatbubble-outline"></ion-icon>
                             </span>
@@ -73,8 +68,8 @@
             <div class="item">
                 <ul>
                     <li>
-                        {# REMPLACER 'z' par l'URL Django pour les paramètres de notifications (ex: 'notification_settings') #}
-                        <a href="{% url 'notification_settings' %}">
+
+                        <a href="#">
                             <span class="icon">
                                 <ion-icon name="notifications-outline"></ion-icon>
                             </span>
@@ -91,8 +86,8 @@
             <div class="item">
                 <ul>
                     <li>
-                        {# REMPLACER 'z' par l'URL Django pour les paramètres de stockage (ex: 'storage_settings') #}
-                        <a href="{% url 'storage_settings' %}">
+
+                        <a href="#">
                             <span class="icon">
                                 <ion-icon name="swap-vertical-outline"></ion-icon>
                             </span>
@@ -103,14 +98,11 @@
                 </ul>
             </div>
         </div>
-
-        <div class="footer">ICE 2025</div>
     </div>
 {% endblock %}
 
 {% block extra_js %}
     {# Scripts Ionicons pour les icônes. #}
-    {# Il est recommandé de les mettre dans base.html si elles sont utilisées sur plusieurs pages. #}
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 {% endblock %}

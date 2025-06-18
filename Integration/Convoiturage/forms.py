@@ -1,10 +1,9 @@
 from django import forms
-from django.contrib.auth.hashers import make_password
 from .models import Utilisateur
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model # Pour obtenir votre modèle Utilisateur
 from .models import Trajet
-from datetime import datetime, date
+from datetime import datetime
 
 
 Utilisateur = get_user_model() # Récupère le modèle Utilisateur défini dans settings.py
@@ -139,9 +138,10 @@ class ProposeTripForm(forms.ModelForm):
         model = Trajet
         fields = [
             'origine', 'destination', 'date_depart', 'heure_depart',
-            'nombre_places', 'prix_par_place', 'description'
+            'nombre_places', 'prix_par_place',
         ]
         widgets = {
+            'origi'
             'date_depart': forms.DateInput(attrs={'type': 'date'}),
             'heure_depart': forms.TimeInput(attrs={'type': 'time'}),
         }
@@ -165,15 +165,15 @@ class TrajetSearchForm(forms.Form):
     destination = forms.CharField(max_length=255, label="Lieu d'arrivée", required=True)
     date_depart = forms.DateField(
         label="Date de départ",
-        widget=forms.DateInput(attrs={'type': 'date'}), # Widget HTML5 pour le calendrier
-        required=False # Optionnel, pour permettre une recherche plus large
+        widget=forms.DateInput(attrs={'type': 'date'}), 
+        required=False 
     )
-    # L'heure peut être une option de filtre avancé, ou omise pour simplifier
-    # heure_depart = forms.TimeField(
-    #     label="Heure de départ (proche de)",
-    #     widget=forms.TimeInput(attrs={'type': 'time'}),
-    #     required=False
-    # )
+
+    heure_depart = forms.TimeField(
+         label="Heure de départ (proche de)",
+         widget=forms.TimeInput(attrs={'type': 'time'}),
+         required=False
+     )
     nombre_places_min = forms.IntegerField(
         label="Nombre de places requises",
         min_value=1,
@@ -181,7 +181,3 @@ class TrajetSearchForm(forms.Form):
         required=False
     )
 
-    # Vous pouvez ajouter des champs pour la "position" si vous utilisez des coordonnées
-    # latitude = forms.DecimalField(...)
-    # longitude = forms.DecimalField(...)
-    # rayon_recherche = forms.IntegerField(...)
